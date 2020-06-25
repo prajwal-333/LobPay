@@ -49,6 +49,8 @@ class Users(models.Model):
     username = models.TextField()
     mobile_number = models.IntegerField()
     password = models.TextField(blank=True, null=True)
+    otp = models.TextField(blank=True, null=True)
+    is_verified = models.BooleanField(blank=True, null=True)
 
     class Meta:
         managed = False

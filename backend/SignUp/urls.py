@@ -4,5 +4,5 @@ from .views import signIn
 
 urlpatterns = [
     path("signin/", signIn.as_view(), name="Sign in"),
-    path("<phone>/", getPhoneNumberRegistered.as_view(), name="OTP Gen"),
+    path("signup/", getPhoneNumberRegistered.as_view(), name="OTP Gen"),
 ]
