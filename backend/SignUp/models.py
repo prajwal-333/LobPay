@@ -10,19 +10,21 @@ from django.db import models
 
 class Customers(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
-
+    address = models.TextField(blank=True, null=True)
+    pincode = models.IntegerField(db_column='pin', blank=True, null=True)
     class Meta:
-        managed = False
+ #      managed = False
         db_table = 'Customers'
 
 
 class Merchants(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     address = models.TextField(blank=True, null=True)
+    pincode = models.IntegerField(db_column='pin', blank=True, null=True)
     account_info = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+  #     managed = False
         db_table = 'Merchants'
 
 
@@ -49,9 +51,11 @@ class Users(models.Model):
     username = models.TextField()
     mobile_number = models.IntegerField()
     password = models.TextField(blank=True, null=True)
+    otp = models.TextField(blank=True, null=True)
+    is_verified = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+#        managed = False
         db_table = 'Users'
 
 
