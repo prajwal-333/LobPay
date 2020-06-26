@@ -10,8 +10,8 @@ from django.db import models
 
 class Customers(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
-    address = models.TextField(blank=True, null=True)
-    pincode = models.IntegerField(db_column='pin', blank=True, null=True)
+    # address = models.TextField(blank=True, null=True)
+    # pincode = models.IntegerField(db_column='pin', blank=True, null=True)
     class Meta:
  #      managed = False
         db_table = 'Customers'

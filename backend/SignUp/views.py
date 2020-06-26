@@ -47,8 +47,10 @@ class getPhoneNumberRegistered(APIView):
                 if merchant == 1:
                     address = request.data["address"]
                     account_info = request.data["account_info"]
-                    new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info)
+                    pincode = request.data["pincode"]
+                    new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pincode=pincode)
                 else:
+                    # print("here I am")
                     new_customer = Customers.objects.create(id=Mobile)
                               
             return Response({"success":msg} , status=200)
@@ -81,7 +83,10 @@ class signIn(APIView):
             act_pass = getattr(user, "password")
             verify = getattr(user, "is_verified")
             # print(act_pass, password)
-            if act_pass == password:
+            if verify==False:
+                user.delete()
+                return Response({"verified":"false","issue":"User does not exist"}, status=400)
+            if (act_pass == password) and verify:
                 return Response({"verified":"true"}, status=200)
             return Response({"verified":"false"}, status=400)
         except ObjectDoesNotExist:
