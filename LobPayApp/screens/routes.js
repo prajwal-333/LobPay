@@ -4,6 +4,9 @@ import { Alert, Button, TextInput, View, StyleSheet,Text,TouchableOpacity } from
 import Login from './Login';
 import Signup from './Signup';
 import Otp from './Otp';
+import SignupCustomer from './signupCustomer';
+import SignupMerchant from './signupMerchant';
+import Choose from './Choose';
 // import Signup from './Signup';
 // import Otp from './Otp';
 
@@ -18,7 +21,10 @@ export default class Routes extends Component {
             >
                 <Stack key="root">
                 <Scene key="login" component={Login} title="Login"/>
-                <Scene key="signup" component={Signup} title="Signup"/>
+                {/* <Scene key="signup" component={Signup} title="Signup"/> */}
+                <Scene key="choose" component={Choose} title="Choose"/>
+                <Scene key="signupCustomer" component={SignupCustomer} title="Signup"/>
+                <Scene key="signupMerchant" component={SignupMerchant} title="Signup"/>
                 <Scene key="otp" component={Otp} title="Otp"/>
                 </Stack>
             </Router>

@@ -1,56 +1,71 @@
 import React,{Component} from 'react';
-import { StyleSheet, Text, View,TextInput,Button ,TouchableOpacity} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import { StyleSheet, Text, View,TextInput,Button ,TouchableOpacity,Alert} from 'react-native';
+import {Actions,Link} from 'react-native-router-flux';
+const InsertMerc='http://192.168.18.4:8000/verify/signup/';//'https://webhook.site/f07ff216-6914-4a8c-b4ac-32df20afc2db';//'http://127.0.0.1:8000/verify/signup/';
 
-export default class Signup extends Component {
+async function insertMerchant(params) {
+  console.log(params);
+  try {
+      let response = await fetch(InsertMerc, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: params
+      });
+      let responseJson = await response.json();
+      console.log(responseJson["exist"]);
+      if(responseJson["exist"]==="true")return "exists";
+      else return "sent";
+      // return responseJson.result; 
+  } catch (error) {
+      console.error(`Error is : ${error}`);
+  }
+}
+
+export default class SignupCustomer extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
           username: '',
-          firstname: '',
-          lastname: '',
+          phone:'',
           password: '',
-          password2:'',
-          email:'',
+         
         };}
+    
     onSignUp() {
-        const { username,firstname,lastname,phone,password,password2 } = this.state;
+        // console.log("hi");
+        const { username,phone,password } = this.state;
         const user = {
+          mobile:`${phone}`,
           username: `${username}`,
-          firstname:`${firstname}`,
-          lastname:`${lastname}`,
-          phone:`${phone}`,
           password: `${password}`,
-          password_con: `${password2}`,
+          merchant: 0 ,
+          is_otp: 'false'
         };
-        fetch('https://61f60f68-3d73-4953-96bf-72af6298e4eb.mock.pstmn.io/signup',{
-            method: 'POST',
-            // api/register
-             headers: new Headers({
-                 'Content-Type': 'application/json' // <-- Specifying the Content-Type
-            }),
-            body: JSON.stringify(user),
-          })
-          .then((response) => response.json())
-          .then((responseJson) => {
-            console.log(responseJson);
-           if(responseJson.message=='Sent the OTP'){
-               Actions.otp();
-           }else {
-               Alert.alert('User Already Registered');
-               this.goBack;
-           }
-          if(responseJson.phone==`${phone}`){
-           // Actions.login();
-          }else{
-            Alert.alert(responseJson.msg);
+        let x=JSON.stringify(user);
+        // console.log(x);
+        insertMerchant(x).then((result)=>{
+          console.log(result);
+          if(result==="exists"){
+           // console.log("yes");
+            Alert.alert(
+              'Alert Title',
+              'User Exists', // <- this part is optional, you can pass an empty string
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              {cancelable: false},
+            );
+          }else if(result=="sent"){
+            Actions.otp({text:phone});
           }
-        })
-        Actions.otp();
+        });
     }
     goBack() {
-        Actions.pop();
+        Actions.login();
         }
     render(){
         return(
@@ -65,22 +80,13 @@ export default class Signup extends Component {
           value={this.state.phone}
           onChangeText={(phone) => this.setState({ phone })}
           placeholder={'phone'}
-          secureTextEntry={true}
+          keyboardType='number-pad'
           style={styles.input}
         />
         <TextInput
           value={this.state.password}
           onChangeText={(password) => this.setState({ password })}
           placeholder={'Password'}
-          secureTextEntry={true}
-          style={styles.input}
-        />
-        <TextInput
-          value={this.state.password2}
-          onChangeText={(password2) => {
-            return this.setState({ password2 });
-          }}
-          placeholder={'ReType-Password'}
           secureTextEntry={true}
           style={styles.input}
         />
@@ -131,4 +137,4 @@ const styles = StyleSheet.create({
       fontWeight: '500'
   }
 });
-module.exports = Signup;
+module.exports = SignupCustomer;
