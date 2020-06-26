@@ -10,31 +10,22 @@ from django.db import models
 
 class Customers(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
-    # address = models.TextField(blank=True, null=True)
-    pincode = models.IntegerField(db_column='pin', blank=True, null=True)
+    pin = models.IntegerField(blank=True, null=True)
+
     class Meta:
- #      managed = False
+        managed = False
         db_table = 'Customers'
 
 
 class Merchants(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     address = models.TextField(blank=True, null=True)
-    pincode = models.IntegerField(db_column='pin', blank=True, null=True)
     account_info = models.TextField(blank=True, null=True)
-
-    class Meta:
-  #     managed = False
-        db_table = 'Merchants'
-
-
-class SignupPhonemodel(models.Model):
-    mobile = models.IntegerField(db_column='Mobile')  # Field name made lowercase.
-    isverified = models.BooleanField(db_column='isVerified')  # Field name made lowercase.
+    pin = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'SignUp_phonemodel'
+        db_table = 'Merchants'
 
 
 class Subscription(models.Model):
@@ -53,10 +44,10 @@ class Users(models.Model):
     password = models.TextField(blank=True, null=True)
     otp = models.TextField(blank=True, null=True)
     is_verified = models.BooleanField(blank=True, null=True)
-    is_merchant = models.BooleanField(blank=True, null=True) # 1 for merchant and 0 for customer
+    is_merchant = models.BooleanField(blank=True, null=True)
 
     class Meta:
-#        managed = False
+        managed = False
         db_table = 'Users'
 
 
@@ -168,3 +159,30 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
+
+class Sus(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'sus'
+
+
+class Sus2(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'sus2'
+
+
+class Sus5(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'sus5'

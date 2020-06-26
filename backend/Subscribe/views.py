@@ -28,10 +28,10 @@ class merchantList(APIView):
 class addSubscription(APIView):
     @staticmethod
     def get(request,cid,mid):
-        s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+        s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid), checkout_id="")
         s.save()
-        print(s.cid)
-        print(s.mid)
+        # print(s.cid)
+        # print(s.mid)
         return Response({"Subscribed":"true"},status=200)
 
 class customerList(APIView):
@@ -50,14 +50,30 @@ class customerList(APIView):
         
         return JsonResponse(customerData, safe=False)
 
+
 class customerCheckoutId(APIView):
     @staticmethod
-    def get(request, mid, cid):
+    def get(request, cid, mid):
+        s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
         try:
-            s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
-            print(s.checkout_id)
+            # c = Customers.objects.get(id=cid)
+            # m = Merchants.objects.get(id=mid)
+            # print(c.id.id,m.id.id)
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            # print(s.checkout_id)
             return Response({"Checkout Obtain":"success","checkout_id":s.checkout_id},status=200)
         except:
             return Response({"Checkout Obtain":"failed"},status=400)
+
+    @staticmethod
+    def put(request, cid, mid):
+        try:
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            s.checkout_id = request.data["checkout_id"]
+            # print(request.data["checkout_id"])
+            s.save()
+            return Response({"Set checkout":"success"},status=200)
+        except:
+            return Response({"Issue":"Customer not subscribed to the merchant"},status=400)
 
 

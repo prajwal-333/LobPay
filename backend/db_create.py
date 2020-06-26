@@ -7,27 +7,28 @@ create_subscription_table = """CREATE TABLE IF NOT EXISTS Subscription(id INTEGE
 
 conn = sqlite3.connect('lobpay.db')
 c = conn.cursor()
-# c.execute("""DROP TABLE IF EXISTS Users;""")
-# c.execute("""DROP TABLE IF EXISTS Customers;""")
-# c.execute("""DROP TABLE IF EXISTS Merchants;""")
-# c.execute("""DROP TABLE IF EXISTS Subscription;""")
-# c.execute(create_user_table)
-# c.execute(create_customer_table)
-# c.execute(create_merchant_table)
-# c.execute(create_subscription_table)
-c.execute("""SELECT * FROM Users;""")
-r = c.fetchall();
-print(len(r))
+c.execute("""DROP TABLE IF EXISTS Users;""")
+c.execute("""DROP TABLE IF EXISTS Customers;""")
+c.execute("""DROP TABLE IF EXISTS Merchants;""")
+c.execute("""DROP TABLE IF EXISTS Subscription;""")
+c.execute(create_user_table)
+c.execute(create_customer_table)
+c.execute(create_merchant_table)
+c.execute(create_subscription_table)
+# c.execute("""delete from Subscription;""")
+# c.execute("""SELECT * FROM Users;""")
+# r = c.fetchall();
+# print(len(r))
 
-c.execute("""SELECT * FROM Customers;""")
-r = c.fetchall();
-print(len(r))
+# c.execute("""SELECT * FROM Customers;""")
+# r = c.fetchall();
+# print(len(r))
 
-c.execute("""SELECT * FROM Merchants;""")
-r = c.fetchall();
-print(len(r))
+# c.execute("""SELECT * FROM Merchants;""")
+# r = c.fetchall();
+# print(len(r))
 
-c.execute("""SELECT * FROM Subscription;""")
-r = c.fetchall();
-print(len(r))
+# c.execute("""SELECT * FROM Subscription;""")
+# r = c.fetchall();
+# print(len(r))
 
