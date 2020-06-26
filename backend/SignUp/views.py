@@ -41,7 +41,7 @@ class getPhoneNumberRegistered(APIView):
                 else:
                     msg = "false"
                 
-                new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= response.json()["OTP"], is_verified=False)
+                new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= response.json()["OTP"], is_verified=False, is_merchant=merchant)
                 Mobile = Users.objects.get(mobile_number=mobile_number)
                 id = int(getattr(Mobile, "id"))
                 if merchant == 1:
@@ -51,7 +51,8 @@ class getPhoneNumberRegistered(APIView):
                     new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pincode=pincode)
                 else:
                     # print("here I am")
-                    new_customer = Customers.objects.create(id=Mobile)
+                    pincode = request.data["pincode"]
+                    new_customer = Customers.objects.create(id=Mobile, pincode=pincode)
                               
             return Response({"success":msg} , status=200)
         else:
@@ -82,12 +83,13 @@ class signIn(APIView):
             user = Users.objects.get(username=username)
             act_pass = getattr(user, "password")
             verify = getattr(user, "is_verified")
+            is_merchant = getattr(user, "is_merchant")
             # print(act_pass, password)
             if verify==False:
                 user.delete()
                 return Response({"verified":"false","issue":"User does not exist"}, status=400)
             if (act_pass == password) and verify:
-                return Response({"verified":"true"}, status=200)
+                return Response({"verified":"true", "is_merchant":is_merchant, "id":user.id}, status=200)
             return Response({"verified":"false"}, status=400)
         except ObjectDoesNotExist:
             return Response({"verified":"false","issue":"User does not exist"}, status=400)

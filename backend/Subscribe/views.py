@@ -13,7 +13,7 @@ class merchantList(APIView):
     @staticmethod
     def get(request,cid):
         KEY = 'BqbsKmGUTe303suAN3GAqZTV4LgSlVLz'
-        cid = 1
+        cid = 2
         cust_entry = Customers.objects.get(id=cid)
         fro = str(getattr(cust_entry,'pincode'))+'%2C+India'
         merch_data = list(Merchants.objects.values())
@@ -33,4 +33,31 @@ class addSubscription(APIView):
         print(s.cid)
         print(s.mid)
         return Response({"Subscribed":"true"},status=200)
+
+class customerList(APIView):
+    @staticmethod
+    def get(request, mid):
+        subs = list(Subscription.objects.filter(mid=mid))
+
+        customerData = []
+        for sub in subs:
+            customer = Customers.objects.get(id=sub.cid.id)
+            print(customer.id.username)
+            cus = {}
+            cus["username"] = customer.id.username
+            cus["id"] = customer.id.id
+            customerData.append(cus)
         
+        return JsonResponse(customerData, safe=False)
+
+class customerCheckoutId(APIView):
+    @staticmethod
+    def get(request, mid, cid):
+        try:
+            s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            print(s.checkout_id)
+            return Response({"Checkout Obtain":"success","checkout_id":s.checkout_id},status=200)
+        except:
+            return Response({"Checkout Obtain":"failed"},status=400)
+
+

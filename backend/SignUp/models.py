@@ -11,7 +11,7 @@ from django.db import models
 class Customers(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     # address = models.TextField(blank=True, null=True)
-    # pincode = models.IntegerField(db_column='pin', blank=True, null=True)
+    pincode = models.IntegerField(db_column='pin', blank=True, null=True)
     class Meta:
  #      managed = False
         db_table = 'Customers'
@@ -53,6 +53,7 @@ class Users(models.Model):
     password = models.TextField(blank=True, null=True)
     otp = models.TextField(blank=True, null=True)
     is_verified = models.BooleanField(blank=True, null=True)
+    is_merchant = models.BooleanField(blank=True, null=True) # 1 for merchant and 0 for customer
 
     class Meta:
 #        managed = False
