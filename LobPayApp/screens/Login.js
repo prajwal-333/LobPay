@@ -9,15 +9,62 @@ import Signup from './Signup';
 //       </View>
 //     );
 //   }
-
+async function LoginUser(params) {
+  console.log(params);
+  try {
+      let response = await fetch(InsertMerc, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: params
+      });
+      let responseJson = await response.json();
+      // console.log(responseJson["exist"]);
+      // if(responseJson["exist"]==="true")return "exists";
+      // else return "sent";
+      // return responseJson.result; 
+      return responseJson;
+  } catch (error) {
+      console.error(`Error is : ${error}`);
+  }
+}
 export default class Login extends Component{
   constructor(props){
     super(props);
     this.state={
-      phone:'',
+      username:'',
       password:''
     };
   }
+
+  onLogin(){
+    const {username,password} =this.state;
+    const user = {
+      username:`${username}`,
+      password:`${password}`
+    }
+    let x=JSON.stringify(user);
+        // console.log(x);
+        LoginUser(x).then((result)=>{
+          console.log(result);
+          if(result["verified"]==="false"){
+           // console.log("yes");
+            Alert.alert(
+              'Alert Title',
+              'Wrong UsernAme Or password', // <- this part is optional, you can pass an empty string
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              {cancelable: false},
+            );
+          }else if(result["verified"]=="true"){
+            
+          }
+        });
+  }
+
   choose() {
     Actions.choose();
 }
@@ -26,10 +73,10 @@ export default class Login extends Component{
       <View style={styles.container}>
         <TextInput
           value={this.state.phone}
-          onChangeText={(phone) => this.setState({ phone })}
-          placeholder={'phone'}
+          onChangeText={(username) => this.setState({ username })}
+          placeholder={'username'}
           style={styles.input}
-          keyboardType='number-pad'
+          // keyboardType='number-pad'
         />
         <TextInput
           value={this.state.password}
@@ -41,7 +88,7 @@ export default class Login extends Component{
          <Button
           title={'Login'}
           style={styles.input}
-          // onPress={this.onLogin.bind(this)}
+          onPress={this.onLogin.bind(this)}
         />
         <View style={styles.signupTextCont}> 
                     <Text >Already have an account? </Text>
