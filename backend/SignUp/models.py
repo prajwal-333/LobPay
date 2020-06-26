@@ -21,10 +21,12 @@ class Merchants(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     address = models.TextField(blank=True, null=True)
     account_info = models.TextField(blank=True, null=True)
+    lat = models.DecimalField(blank=True, null=True, max_digits=9, decimal_places=6) #from location api
+    long = models.DecimalField(blank=True, null=True, max_digits=9, decimal_places=6) #from location api
     pin = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+      #  managed = False
         db_table = 'Merchants'
 
 
