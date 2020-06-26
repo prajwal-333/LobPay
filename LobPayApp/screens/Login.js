@@ -18,8 +18,8 @@ export default class Login extends Component{
       password:''
     };
   }
-  signup() {
-    Actions.signup();
+  choose() {
+    Actions.choose();
 }
   render(){
     return(
@@ -45,7 +45,7 @@ export default class Login extends Component{
         />
         <View style={styles.signupTextCont}> 
                     <Text >Already have an account? </Text>
-                    <TouchableOpacity onPress={this.signup}><Text style={styles.signupButton}>Sign up</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={this.choose}><Text style={styles.signupButton}>Sign up</Text></TouchableOpacity>
         </View>
       </View>
 
