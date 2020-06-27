@@ -11,27 +11,39 @@ import json
 
 class merchantList(APIView):
     @staticmethod
-    def get(request,cid):
+    def post(request):
         KEY = 'BqbsKmGUTe303suAN3GAqZTV4LgSlVLz'
-        cid = 2
-        cust_entry = Customers.objects.get(id=cid)
-        fro = str(getattr(cust_entry,'pincode'))+'%2C+India'
-        merch_data = list(Merchants.objects.values())
-        for i in merch_data:
-            to = str(i["pincode"])+'%2C+India'
+        cid = request.data["cid"]
+        lat = request.data["lat"]
+        long = request.data["long"]
+        fro = str(lat)+'%2C+'+str(long)
+        print(fro)
+        merch_set= Merchants.objects.values()
+        merch_data = list(merch_set.values('id','address','pincode'))
+        for i,j in zip(merch_set,merch_data):
+            print(i,j)
+            subs = Subscription.objects.filter(cid=cid,mid=i['id_id'])
+          
+            to = str(i['lat'])+'%2C+'+str(i['long'])
+            print(to)
             url = "https://www.mapquestapi.com/directions/v2/route?key="+KEY+"&from="+fro+"&to="+to+"&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false&unit=k"
             response = requests.request("GET", url)
+            print(response.json())
             dist = response.json()["route"]["distance"]
-            i.update({"distance": dist})
+            j.update({"distance": dist})
+            if subs:
+                j.update({"subscribed": "true"})
+            else:
+                j.update({"subscribed": "false"})
         return JsonResponse(merch_data, safe=False)
 
 class addSubscription(APIView):
     @staticmethod
     def get(request,cid,mid):
-        s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+        s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid), checkout_id="")
         s.save()
-        print(s.cid)
-        print(s.mid)
+        # print(s.cid)
+        # print(s.mid)
         return Response({"Subscribed":"true"},status=200)
 
 class customerList(APIView):
@@ -50,14 +62,30 @@ class customerList(APIView):
         
         return JsonResponse(customerData, safe=False)
 
+
 class customerCheckoutId(APIView):
     @staticmethod
-    def get(request, mid, cid):
+    def get(request, cid, mid):
+        s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
         try:
-            s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
-            print(s.checkout_id)
+            # c = Customers.objects.get(id=cid)
+            # m = Merchants.objects.get(id=mid)
+            # print(c.id.id,m.id.id)
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            # print(s.checkout_id)
             return Response({"Checkout Obtain":"success","checkout_id":s.checkout_id},status=200)
         except:
             return Response({"Checkout Obtain":"failed"},status=400)
+
+    @staticmethod
+    def put(request, cid, mid):
+        try:
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            s.checkout_id = request.data["checkout_id"]
+            # print(request.data["checkout_id"])
+            s.save()
+            return Response({"Set checkout":"success"},status=200)
+        except:
+            return Response({"Issue":"Customer not subscribed to the merchant"},status=400)
 
 
