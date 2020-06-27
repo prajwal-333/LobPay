@@ -68,6 +68,12 @@ export default class Login extends Component{
   choose() {
     Actions.choose();
 }
+  searchCustomers() {
+    Actions.searchCustomers();
+  }
+  payMerchant() {
+    Actions.payMerchant();
+  }
   render(){
     return(
       <View style={styles.container}>
@@ -93,6 +99,9 @@ export default class Login extends Component{
         <View style={styles.signupTextCont}> 
                     <Text >Already have an account? </Text>
                     <TouchableOpacity onPress={this.choose}><Text style={styles.signupButton}>Sign up</Text></TouchableOpacity>
+                   {/*Added for Testing components */}
+                    <TouchableOpacity onPress={this.searchCustomers}><Text style={styles.signupButton}> SearchCustomer</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={this.payMerchant}><Text style={styles.signupButton}> PayMerch</Text></TouchableOpacity>
         </View>
       </View>
 
