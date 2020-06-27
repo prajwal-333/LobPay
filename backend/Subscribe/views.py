@@ -19,7 +19,7 @@ class merchantList(APIView):
         fro = str(lat)+'%2C+'+str(long)
         print(fro)
         merch_set= Merchants.objects.values()
-        merch_data = list(merch_set.values('id','address','pincode'))
+        merch_data = list(merch_set.values('id','address','pin'))
         for i,j in zip(merch_set,merch_data):
             print(i,j)
             subs = Subscription.objects.filter(cid=cid,mid=i['id_id'])

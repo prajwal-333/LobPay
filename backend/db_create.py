@@ -15,7 +15,6 @@ c.execute(create_user_table)
 c.execute(create_customer_table)
 c.execute(create_merchant_table)
 c.execute(create_subscription_table)
-# c.execute("""delete from Subscription;""")
 # c.execute("""SELECT * FROM Users;""")
 # r = c.fetchall();
 # print(len(r))

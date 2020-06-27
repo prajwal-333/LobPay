@@ -48,7 +48,12 @@ class getPhoneNumberRegistered(APIView):
                     address = request.data["address"]
                     account_info = request.data["account_info"]
                     pincode = request.data["pincode"]
-                    new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode)
+                    if ('lat' in request.data) and ('long' in request.data):
+                        lat = request.data["lat"]
+                        long = request.data["long"]
+                        new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode, lat=lat, long=long)
+                    else:
+                        new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode)
                 else:
                     # print("here I am")
                     pincode = request.data["pincode"]
