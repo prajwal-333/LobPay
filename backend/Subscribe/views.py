@@ -37,14 +37,6 @@ class merchantList(APIView):
                 j.update({"subscribed": "false"})
         return JsonResponse(merch_data, safe=False)
 
-class addSubscription(APIView):
-    @staticmethod
-    def get(request,cid,mid):
-        s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid), checkout_id="")
-        s.save()
-        # print(s.cid)
-        # print(s.mid)
-        return Response({"Subscribed":"true"},status=200)
 
 class addSubscription(APIView):
     @staticmethod
