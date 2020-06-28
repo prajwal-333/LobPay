@@ -46,6 +46,27 @@ class addSubscription(APIView):
         # print(s.mid)
         return Response({"Subscribed":"true"},status=200)
 
+class addSubscription(APIView):
+    @staticmethod
+    def get(request,cid,mid):
+        try:
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            return Response({"Subscribed": "Already subscribed"}, status=409)
+        except ObjectDoesNotExist:
+            s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid), checkout_id="")
+            s.save()
+            return Response({"Subscribed":"true"},status=200)
+
+    @staticmethod
+    def delete(request,cid,mid):
+        try:
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            s.delete()
+            return Response({"Subscription deleted":"true"},status=200)
+        except ObjectDoesNotExist:
+            return Response({"Subscription status":"Does Not exist"},status=409)
+
+
 class customerList(APIView):
     @staticmethod
     def get(request, mid):
@@ -66,7 +87,7 @@ class customerList(APIView):
 class customerCheckoutId(APIView):
     @staticmethod
     def get(request, cid, mid):
-        s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+        # s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
         try:
             # c = Customers.objects.get(id=cid)
             # m = Merchants.objects.get(id=mid)
