@@ -7,6 +7,7 @@ import Otp from './Otp';
 import SignupCustomer from './signupCustomer';
 import SignupMerchant from './signupMerchant';
 import Choose from './Choose';
+import Customer from './Customer';
 // import Signup from './Signup';
 // import Otp from './Otp';
 
@@ -26,6 +27,7 @@ export default class Routes extends Component {
                 <Scene key="signupCustomer" component={SignupCustomer} title="Signup"/>
                 <Scene key="signupMerchant" component={SignupMerchant} title="Signup"/>
                 <Scene key="otp" component={Otp} title="Otp"/>
+                <Scene key="customer" component={Customer} title="Customer"/>
                 </Stack>
             </Router>
         )

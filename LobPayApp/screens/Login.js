@@ -9,10 +9,11 @@ import Signup from './Signup';
 //       </View>
 //     );
 //   }
+const logUser='http://192.168.18.4:8000/verify/signin/'
 async function LoginUser(params) {
   console.log(params);
   try {
-      let response = await fetch(InsertMerc, {
+      let response = await fetch(logUser, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',
@@ -59,8 +60,11 @@ export default class Login extends Component{
               ],
               {cancelable: false},
             );
-          }else if(result["verified"]=="true"){
-            
+          }else if(result["verified"]==="true"){
+            if(result["is_merchant"]===false)Actions.customer({text:result["id"]});
+            else {
+
+            }
           }
         });
   }
@@ -131,3 +135,4 @@ const styles = StyleSheet.create({
       fontWeight: '500'
   }
 });
+module.exports = Login;
