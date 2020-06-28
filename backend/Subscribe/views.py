@@ -46,6 +46,26 @@ class addSubscription(APIView):
         # print(s.mid)
         return Response({"Subscribed":"true"},status=200)
 
+class addSubscription(APIView):
+    @staticmethod
+    def get(request,cid,mid):
+        s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid), checkout_id="")
+        s.save()
+        # print(s.cid)
+        # print(s.mid)
+        return Response({"Subscribed":"true"},status=200)
+
+    @staticmethod
+    def delete(request,cid,mid):
+        print(cid,mid)
+        s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+        print(s.checkout_id)
+        s.delete()
+        # print(s.cid)
+        # print(s.mid)
+        return Response({"Subscription deleted":"true"},status=200)
+
+
 class customerList(APIView):
     @staticmethod
     def get(request, mid):
@@ -66,7 +86,7 @@ class customerList(APIView):
 class customerCheckoutId(APIView):
     @staticmethod
     def get(request, cid, mid):
-        s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+        # s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
         try:
             # c = Customers.objects.get(id=cid)
             # m = Merchants.objects.get(id=mid)
