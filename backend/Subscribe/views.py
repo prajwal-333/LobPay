@@ -59,13 +59,12 @@ class addSubscription(APIView):
 
     @staticmethod
     def delete(request,cid,mid):
-        print(cid,mid)
-        s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
-        print(s.checkout_id)
-        s.delete()
-        # print(s.cid)
-        # print(s.mid)
-        return Response({"Subscription deleted":"true"},status=200)
+        try:
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            s.delete()
+            return Response({"Subscription deleted":"true"},status=200)
+        except ObjectDoesNotExist:
+            return Response({"Subscription status":"Does Not exist"},status=409)
 
 
 class customerList(APIView):
