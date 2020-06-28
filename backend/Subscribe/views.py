@@ -49,11 +49,13 @@ class addSubscription(APIView):
 class addSubscription(APIView):
     @staticmethod
     def get(request,cid,mid):
-        s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid), checkout_id="")
-        s.save()
-        # print(s.cid)
-        # print(s.mid)
-        return Response({"Subscribed":"true"},status=200)
+        try:
+            s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
+            return Response({"Subscribed": "Already subscribed"}, status=409)
+        except ObjectDoesNotExist:
+            s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid), checkout_id="")
+            s.save()
+            return Response({"Subscribed":"true"},status=200)
 
     @staticmethod
     def delete(request,cid,mid):
