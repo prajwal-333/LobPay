@@ -11,29 +11,57 @@ from django.db import models
 class Customers(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     pin = models.IntegerField(blank=True, null=True)
+    checkout_id = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'Customers'
 
 
+class Inventory(models.Model):
+    name = models.TextField(blank=True, null=True)
+    price = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Inventory'
+
+
+class Invoice(models.Model):
+    cid = models.ForeignKey(Customers, models.DO_NOTHING, db_column='cid')
+    inv_date = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Invoice'
+
+
+class Invoiceitem(models.Model):
+    inv = models.ForeignKey(Invoice, models.DO_NOTHING)
+    item = models.ForeignKey(Inventory, models.DO_NOTHING)
+    quantity = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'InvoiceItem'
+
+
 class Merchants(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     address = models.TextField(blank=True, null=True)
     account_info = models.TextField(blank=True, null=True)
-    lat = models.DecimalField(blank=True, null=True, max_digits=9, decimal_places=6) #from location api
-    long = models.DecimalField(blank=True, null=True, max_digits=9, decimal_places=6) #from location api
     pin = models.IntegerField(blank=True, null=True)
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
 
     class Meta:
-      #  managed = False
+        managed = False
         db_table = 'Merchants'
 
 
 class Subscription(models.Model):
     cid = models.ForeignKey(Customers, models.DO_NOTHING, db_column='cid')
     mid = models.ForeignKey(Merchants, models.DO_NOTHING, db_column='mid')
-    checkout_id = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False

@@ -7,6 +7,6 @@ urlpatterns = [
     path("customerlist/<mid>", customerList.as_view(), name="Customers List"),
     path("merchantlist/", merchantList.as_view(), name="Shops List"), 
     path("<cid>/<mid>", addSubscription.as_view(), name="Subscribe User"),
-    path("obtainCheckout/<cid>/<mid>", customerCheckoutId.as_view(), name="Get checkout id"),
+    path("obtainCheckout/<cid>", customerCheckoutId.as_view(), name="Get checkout id"),
 ]
 

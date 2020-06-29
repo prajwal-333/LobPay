@@ -57,7 +57,11 @@ class getPhoneNumberRegistered(APIView):
                 else:
                     # print("here I am")
                     pincode = request.data["pincode"]
-                    new_customer = Customers.objects.create(id=Mobile, pin=pincode)
+                    if 'checkout_id' in request.data: 
+                        checkout_id = request.data["checkout_id"]
+                    else:
+                        checkout_id = ""
+                    new_customer = Customers.objects.create(id=Mobile, pin=pincode, checkout_id=checkout_id)
                               
             return Response({"success":msg} , status=200)
         else:
