@@ -24,8 +24,8 @@ class fillMerchant(APIView):
             for item in request.data:
                 it = Inventory.objects.get(name=item["name"])
                 quantity = item["quantity"]
-                print(it, quantity, mer)
-                mer_inv = MerchantsInventory(item_id=it.id, quantity=quantity,mid=mer)
+                # print(it, quantity, mer)
+                mer_inv = MerchantsInventory(item_id=it.id, quantity=quantity,mid=mer, price=item["price"])
                 mer_inv.save()
             return Response({"Success":"true"}, status=200)
         except:
@@ -54,8 +54,8 @@ class createBills(APIView):
         total_price=0
         for item in request.data:
             it = Inventory.objects.get(name=item["name"])
-            all_piece_price = it.price*item["quantity"]
             mer = MerchantsInventory.objects.get(mid=mid, item_id=it.id)
+            all_piece_price = mer.price*item["quantity"]
             mer.quantity = mer.quantity-item["quantity"]
             mer.save()
             total_price+=all_piece_price
@@ -79,7 +79,8 @@ class createBills(APIView):
                 it = Inventory.objects.get(id=item.item_id)
                 item_name = it.name
                 quantity = item.quantity
-                send_item = {"name":item_name, "quantity":quantity,"price":it.price}
+                mer = MerchantsInventory.objects.get(mid=mid, item_id=it.id)
+                send_item = {"date":invoice.inv_date, "name":item_name, "quantity":quantity,"price":mer.price}
                 send_items.append(send_item)
             send_items_all.append(send_items)
 
