@@ -6,7 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
+from datetime import date
 
 class Customers(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
@@ -29,10 +29,11 @@ class Inventory(models.Model):
 
 class Invoice(models.Model):
     cid = models.ForeignKey(Customers, models.DO_NOTHING, db_column='cid')
-    inv_date = models.DateField(blank=True, null=True)
+    inv_date = models.DateField(blank=True, null=True,default =date.today)
+    total_price = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'Invoice'
 
 
@@ -57,6 +58,25 @@ class Merchants(models.Model):
     class Meta:
         managed = False
         db_table = 'Merchants'
+
+
+class MerchantsInventory(models.Model):
+    mid = models.ForeignKey(Merchants, models.DO_NOTHING, db_column='mid')
+    quantity = models.IntegerField()
+    item = models.ForeignKey(Inventory, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'Merchants_Inventory'
+
+
+class SignupPhonemodel(models.Model):
+    mobile = models.IntegerField(db_column='Mobile')  # Field name made lowercase.
+    isverified = models.BooleanField(db_column='isVerified')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'SignUp_phonemodel'
 
 
 class Subscription(models.Model):
@@ -189,30 +209,3 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
-
-
-class Sus(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'sus'
-
-
-class Sus2(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'sus2'
-
-
-class Sus5(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'sus5'

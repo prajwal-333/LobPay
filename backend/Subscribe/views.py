@@ -41,6 +41,7 @@ class merchantList(APIView):
 class addSubscription(APIView):
     @staticmethod
     def get(request,cid,mid):
+        print(cid,mid)
         try:
             s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
             return Response({"Subscribed": "Already subscribed"}, status=409)

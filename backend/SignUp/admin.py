@@ -6,6 +6,7 @@ from .models import Subscription
 from .models import Inventory
 from .models import Invoice
 from .models import Invoiceitem
+from .models import MerchantsInventory
 
 # Register your models here.
 admin.site.register(Users)
@@ -15,3 +16,4 @@ admin.site.register(Subscription)
 admin.site.register(Inventory)
 admin.site.register(Invoice)
 admin.site.register(Invoiceitem)
+admin.site.register(MerchantsInventory)
