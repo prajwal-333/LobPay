@@ -7,12 +7,14 @@ import Otp from './Otp';
 import SignupCustomer from './signupCustomer';
 import SignupMerchant from './signupMerchant';
 import Choose from './Choose';
-<<<<<<< HEAD
 import Customer from './Customer';
-=======
+import MerchantOperations from './merchantOperations';
+import ManageInventory from './manageInventory';
+import AddProduct from './addProduct';
+import MakeBill from './makeBill';
+import ShowCart from './showCart';
 import SearchCustomers from './searchCustomers';
 import PayMerchant from './payMerchant';
->>>>>>> 455125e8c73cc842dc356e138f074e9fe7a12f6f
 // import Signup from './Signup';
 // import Otp from './Otp';
 
@@ -32,12 +34,14 @@ export default class Routes extends Component {
                 <Scene key="signupCustomer" component={SignupCustomer} title="Signup"/>
                 <Scene key="signupMerchant" component={SignupMerchant} title="Signup"/>
                 <Scene key="otp" component={Otp} title="Otp"/>
-<<<<<<< HEAD
                 <Scene key="customer" component={Customer} title="Customer"/>
-=======
+                <Scene key="merchantOperations" component={MerchantOperations} title="Merchant Operations"/>
+                <Scene key="manageInventory" component={ManageInventory} title="Manage Inventory"/>
+                <Scene key="addProduct" component={AddProduct} title="Add Product"/>
+                <Scene key="makeBill" component={MakeBill} title="Make Bill"/>
+                <Scene key="showCart" component={ShowCart} title="Cart"/>
                 <Scene key="searchCustomers" component={SearchCustomers} title="Search Customers"/>
                 <Scene key="payMerchant" component={PayMerchant} title="Pay Merchant"/>
->>>>>>> 455125e8c73cc842dc356e138f074e9fe7a12f6f
                 </Stack>
             </Router>
         )

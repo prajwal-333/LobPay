@@ -6,7 +6,7 @@ const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the net
 export default class SearchCustomers extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             search: '',
             customers: [   // Dummy Data for testing without API
@@ -22,6 +22,7 @@ export default class SearchCustomers extends Component {
                 }
             ],
             data: [],
+            bill: props.bill ? props.bill : undefined,
         };
       }
     componentDidMount() {
@@ -53,26 +54,44 @@ export default class SearchCustomers extends Component {
     goBack() {
         Actions.pop();
     }
-    select(customer) {
+    payMerchant(customer) {
       console.log(customer);
-      Actions.payMerchant({customer: customer});
+      Actions.payMerchant({customer: customer,bill: this.state.bill});
     }
     viewCustomers(){
         var view = [];
-        if(this.state.customers === undefined || this.state.customers === '' || this.state.customers.length === 0)
-        {
+        if(this.state.customers === undefined || this.state.customers === '' || this.state.customers.length === 0) {
+            if(this.state.search === '') {
+                return (
+                    <View style={styles.itemContainer,{textAlign:'center'}}>
+                      <Text style={styles.eText}>No Subscribed Customers</Text>
+                      <TouchableOpacity onPress={() => this.payMerchant()}>
+                        <Text style={[styles.eText,{color: '#12799f',}]}>{"\n"}Make Payment for new Customer</Text>
+                      </TouchableOpacity>
+                    </View>
+                );
+            }
             return (
                 <View style={styles.itemContainer}>
-                  <Text style={styles.itemText}>No Customer Record Found</Text>
+                  <Text style={styles.eText}>No Customer Record Found</Text>
+                  <TouchableOpacity onPress={() => this.payMerchant()}>
+                    <Text style={[styles.eText,{color: '#12799f',}]}>Make Payment for new Customer</Text>
+                  </TouchableOpacity>
                 </View>
             );
         }
-        for(var i=0;i<1;i++) // Testing inner scrolling
-        {
+        view.push(
+        <View style={styles.itemContainer}>
+          <TouchableOpacity onPress={() => this.payMerchant()}>
+            <Text style={[styles.eText,{color: '#12799f',}]}>Make Payment for new Customer</Text>
+          </TouchableOpacity>
+        </View>
+        );
+        for(var i=0;i<1;i++) { // Testing inner scrolling
         this.state.customers.forEach((customer) => {
             view.push(
                 <View key={i*10+customer.id} style={styles.itemContainer}>
-                  <TouchableOpacity style={styles.item} onPress={() => this.select(customer)}>
+                  <TouchableOpacity style={styles.item} onPress={() => this.payMerchant(customer)}>
                     <Text style={styles.itemText}>{customer.username}</Text>
                     <Text style={styles.itemText}>{customer.mobile}</Text>
                   </TouchableOpacity>
@@ -164,4 +183,8 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 20,
   },
+  eText: {
+    fontSize: 15,
+    textAlign: 'center',
+  }
 });
