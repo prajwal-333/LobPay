@@ -8,7 +8,8 @@ export default class PayMerchant extends Component {
         super(props);
         this.state = {
             username: props.customer ? props.customer.username : '',
-            amount: '',
+            amount: props.bill ? props.bill.tAmount : '',
+            bill: props.bill ? props.bill : undefined,
         };
     }
     goBack() {

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { StyleSheet, Text, View,TextInput,Button ,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,TextInput,Button,Alert,TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Signup from './Signup';
 // export default function login() {
@@ -9,7 +9,7 @@ import Signup from './Signup';
 //       </View>
 //     );
 //   }
-const logUser='http://192.168.18.4:8000/verify/signin/'
+const logUser='http://192.168.43.122:8000/verify/signin/' // Changed host 
 async function LoginUser(params) {
   console.log(params);
   try {
@@ -63,8 +63,10 @@ export default class Login extends Component{
           }else if(result["verified"]==="true"){
             if(result["is_merchant"]===false)Actions.customer({text:result["id"]});
             else {
-
+              Actions.replace('merchantOperations'); // Use {msk , abcefa} to login as merchant
             }
+          } else {
+            console.log('Error in response!');
           }
         });
   }
@@ -74,7 +76,7 @@ export default class Login extends Component{
 }
   searchCustomers() {
     Actions.searchCustomers();
-  }
+  } 
   payMerchant() {
     Actions.payMerchant();
   }
@@ -103,9 +105,6 @@ export default class Login extends Component{
         <View style={styles.signupTextCont}> 
                     <Text >Already have an account? </Text>
                     <TouchableOpacity onPress={this.choose}><Text style={styles.signupButton}>Sign up</Text></TouchableOpacity>
-                   {/*Added for Testing components */}
-                    <TouchableOpacity onPress={this.searchCustomers}><Text style={styles.signupButton}> SearchCustomer</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={this.payMerchant}><Text style={styles.signupButton}> PayMerch</Text></TouchableOpacity>
         </View>
       </View>
 
