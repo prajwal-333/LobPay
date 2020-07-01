@@ -25,7 +25,7 @@ class getPhoneNumberRegistered(APIView):
                 password = request.data["password"]
                 mobile_number = request.data["mobile"]
                 merchant = request.data["merchant"]
-                 # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
+                # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
                 # url = "https://gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com/otp/generate/"+str(mobile_number)
 
                 # querystring = {"getOTP":"true","duration":"100","digits":"5","message":"Your LobPay verification code is OTP_VALUE"}
@@ -51,12 +51,10 @@ class getPhoneNumberRegistered(APIView):
                     address = request.data["address"]
                     account_info = request.data["account_info"]
                     pincode = request.data["pincode"]
-                    if ('lat' in request.data) and ('long' in request.data):
-                        lat = request.data["lat"]
-                        long = request.data["long"]
-                        new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode, lat=lat, long=long)
-                    else:
-                        new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode)
+                    lat = request.data["lat"]
+                    long = request.data["long"]
+                    print("asdasdasd",lat,long)
+                    new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode, lat=lat, long=long, subscribers=0)
                 else:
                     # print("here I am")
                     pincode = request.data["pincode"]

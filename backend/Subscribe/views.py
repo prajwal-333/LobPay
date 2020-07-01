@@ -17,18 +17,18 @@ class merchantList(APIView):
         lat = request.data["lat"]
         long = request.data["long"]
         fro = str(lat)+'%2C+'+str(long)
-        print(fro)
+        # print(fro)
         merch_set= Merchants.objects.values()
-        merch_data = list(merch_set.values('id','address','pin'))
+        merch_data = list(merch_set.values('id','address','pin','subscribers'))
         for i,j in zip(merch_set,merch_data):
-            print(i,j)
+            # print(i,j)
             subs = Subscription.objects.filter(cid=cid,mid=i['id_id'])
           
             to = str(i['lat'])+'%2C+'+str(i['long'])
-            print(to)
+            # print(to)
             url = "https://www.mapquestapi.com/directions/v2/route?key="+KEY+"&from="+fro+"&to="+to+"&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false&unit=k"
             response = requests.request("GET", url)
-            print(response.json())
+            # print(response.json())
             dist = response.json()["route"]["distance"]
             j.update({"distance": dist})
             if subs:
@@ -48,6 +48,9 @@ class addSubscription(APIView):
         except ObjectDoesNotExist:
             s = Subscription(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
             s.save()
+            mer = Merchants.objects.get(id=Users.objects.get(id=mid))
+            mer.subscribers = mer.subscribers+1
+            mer.save()
             return Response({"Subscribed":"true"},status=200)
 
     @staticmethod
@@ -55,6 +58,9 @@ class addSubscription(APIView):
         try:
             s = Subscription.objects.get(cid=Customers.objects.get(id=cid), mid=Merchants.objects.get(id=mid))
             s.delete()
+            mer = Merchants.objects.get(id=Users.objects.get(id=mid))
+            mer.subscribers = mer.subscribers-1
+            mer.save()
             return Response({"Subscription deleted":"true"},status=200)
         except ObjectDoesNotExist:
             return Response({"Subscription status":"Does Not exist"},status=409)
@@ -68,7 +74,7 @@ class customerList(APIView):
         customerData = []
         for sub in subs:
             customer = Customers.objects.get(id=sub.cid.id)
-            print(customer.id.username)
+            # print(customer.id.username)
             cus = {}
             cus["username"] = customer.id.username
             cus["id"] = customer.id.id

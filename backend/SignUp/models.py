@@ -29,7 +29,7 @@ class Inventory(models.Model):
 
 class Invoice(models.Model):
     cid = models.ForeignKey(Customers, models.DO_NOTHING, db_column='cid')
-    inv_date = models.DateField(blank=True, null=True,default=date.today)
+    inv_date = models.DateField(blank=True, null=True, default=date.today)
     total_price = models.FloatField(blank=True, null=True)
 
     class Meta:
@@ -54,9 +54,10 @@ class Merchants(models.Model):
     pin = models.IntegerField(blank=True, null=True)
     lat = models.FloatField(blank=True, null=True)
     long = models.FloatField(blank=True, null=True)
+    subscribers = models.IntegerField(default=0)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'Merchants'
 
 
