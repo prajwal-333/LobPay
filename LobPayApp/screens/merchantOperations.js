@@ -7,7 +7,7 @@ export default class MerchantOperations extends Component {
         super(props);
         
         this.state = {
-          mid:this.props.mid,
+          mid: props.mid,
         };
     }
     render() {

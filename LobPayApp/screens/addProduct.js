@@ -8,11 +8,11 @@ export default class AddProduct extends Component {
         super(props);
 
         this.state = {
+            mid: props.mid,
             edit: props.edit !== undefined ? props.edit : null,
-            description: props.edit !== undefined ? props.products[props.edit].description : '',
-            weight: props.edit !== undefined ? String(props.products[props.edit].weight) : '',
+            name: props.edit !== undefined ? props.products[props.edit].name : '',
             price: props.edit !== undefined ? String(props.products[props.edit].price) : '',
-            units: props.edit !== undefined ? String(props.products[props.edit].units) : '',
+            quantity: props.edit !== undefined ? String(props.products[props.edit].quantity) : '',
             products: props.products !== undefined ?  props.products : [],
         };
         console.log(this.state);
@@ -25,35 +25,41 @@ export default class AddProduct extends Component {
     }
     onConfirm() {
       var product = {
-        description : this.state.description,
-        weight : Number(this.state.weight),
+        name : this.state.name,
         price : Number(this.state.price),
-        units : Number(this.state.units),
+        quantity : Number(this.state.quantity),
       }
-
-      var Products = this.state.products;
-      if(this.state.edit !== null)   Products[this.state.edit] = product;
-      else                           Products.push(product);
-      Actions.pop();
-      setTimeout(() => {
-        Actions.refresh({products: Products});
-      },0);
+      var array = [product];
+      fetch(apiHost + '/inv/merchantInventory/' + this.state.mid, {method: 'POST', body: array})
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson.Success === "true") {
+            var Products = this.state.products;
+            if(this.state.edit !== null)   Products[this.state.edit] = product;
+            else                           Products.push(product);
+            console.log(Products);
+            Actions.pop();
+            setTimeout(() => {
+              Actions.refresh({data: Products, products: Products});
+            },100);
+          }
+          else {
+            Alert.alert('Error Ocurred!');
+          }
+        })
+        .catch((e) => {
+          console.log(e.message);
+          Alert.alert(e.message);
+        });
     }
     render() {
         return(
         <View style={styles.container}>
           <TextInput
-            value={this.state.description}
-            onChangeText={(description) => this.setState({description})}
+            value={this.state.name}
+            onChangeText={(name) => this.setState({name})}
             placeholder={'Product Name'}
             keyboardType='default'
-            style={styles.input}
-          />
-          <TextInput
-            value={this.state.weight}
-            onChangeText={(weight) => this.setState({weight})}
-            placeholder={'Weight in Kg'}
-            keyboardType='number-pad'
             style={styles.input}
           />
           <TextInput
@@ -64,9 +70,9 @@ export default class AddProduct extends Component {
             style={styles.input}
           />
           <TextInput
-            value={this.state.units}
-            onChangeText={(units) => this.setState({units})}
-            placeholder={'Number of Units'}
+            value={this.state.quantity}
+            onChangeText={(quantity) => this.setState({quantity})}
+            placeholder={'Quantity'}
             keyboardType='number-pad'
             style={styles.input}
           />

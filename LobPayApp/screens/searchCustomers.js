@@ -1,33 +1,22 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,ScrollView,TouchableOpacity,Image,Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
 
 export default class SearchCustomers extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            mid: props.mid,
             search: '',
-            customers: [   // Dummy Data for testing without API
-                {
-                    username: "msy",
-                    mobile: 1,
-                    id: 2
-                },
-                {
-                    username: "msr",
-                    mobile: 2,
-                    id: 3
-                }
-            ],
+            customers: [],
             data: [],
             bill: props.bill ? props.bill : undefined,
         };
       }
     componentDidMount() {
-        this.setState({data : this.state.customers}); // Dummy Data for test
-        fetch(apiHost + '/subscribe/customerlist/1', {method: 'GET'})
+        fetch(apiHost + '/subscribe/customerlist/' + this.state.mid, {method: 'GET'})
           .then((response) => response.json())
           .then((responseJson) => {
             this.setState({data : responseJson, customers : responseJson});
@@ -56,7 +45,7 @@ export default class SearchCustomers extends Component {
     }
     payMerchant(customer) {
       console.log(customer);
-      Actions.payMerchant({customer: customer,bill: this.state.bill});
+      Actions.payMerchant({mid: this.state.mid, customer: customer,bill: this.state.bill});
     }
     viewCustomers(){
         var view = [];
@@ -81,16 +70,15 @@ export default class SearchCustomers extends Component {
             );
         }
         view.push(
-        <View style={styles.itemContainer}>
+        <View key={0} style={[styles.itemContainer, {textAlign: 'center'}]}>
           <TouchableOpacity onPress={() => this.payMerchant()}>
             <Text style={[styles.eText,{color: '#12799f',}]}>Make Payment for new Customer</Text>
           </TouchableOpacity>
         </View>
         );
-        for(var i=0;i<1;i++) { // Testing inner scrolling
         this.state.customers.forEach((customer) => {
             view.push(
-                <View key={i*10+customer.id} style={styles.itemContainer}>
+                <View key={customer.id} style={styles.itemContainer}>
                   <TouchableOpacity style={styles.item} onPress={() => this.payMerchant(customer)}>
                     <Text style={styles.itemText}>{customer.username}</Text>
                     <Text style={styles.itemText}>{customer.mobile}</Text>
@@ -98,7 +86,6 @@ export default class SearchCustomers extends Component {
                 </View>
             );
         });
-        }
         return view;
     }
     render() {

@@ -1,46 +1,34 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,ScrollView,TouchableOpacity,Image,Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
 
 export default class MakeBill extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
+            mid: props.mid,
             search: '',
-            products: [   // Dummy Data for testing without API
-                {
-                    description: "Biscuits",
-                    weight: 0.150,
-                    price: 25,
-                    units: 15,
-                    cart: 0,
-                },
-                {
-                    description: "Potato Chips",
-                    weight: 0.200,
-                    price: 20,
-                    units: 10,
-                    cart: 0,
-                }
-            ],
+            products: [],
             data: [],
             cart: [],
         };
       }
     componentDidMount() {
-        this.setState({data : this.state.products}); // Dummy Data for test
-        // fetch(apiHost + '/subscribe/productlist/1', {method: 'GET'})
-        //   .then((response) => response.json())
-        //   .then((responseJson) => {
-        //     this.setState({data : responseJson, products : responseJson});
-        //     console.log('data :',this.state.data);
-        //   })
-        //   .catch((e) => {
-        //     console.log(e.message);
-        //     Alert.alert(e.message);
-        //   });
+      fetch(apiHost + '/inv/merchantInventory/' + this.state.mid, {method: 'GET'})
+        .then((response) => response.json())
+        .then((responseJson) => {
+          responseJson.forEach((p) => {
+            p.cart=0;
+          })
+          this.setState({data : responseJson, products : responseJson});
+          console.log('data :',this.state.data);
+        })
+        .catch((e) => {
+          console.log(e.message);
+          Alert.alert(e.message);
+        });
     }
     onSearch(search) {
       var data = this.state.data;
@@ -48,7 +36,7 @@ export default class MakeBill extends Component {
       search = search.toLowerCase();
       console.log('Search :',search);
       data.forEach((p) => {
-        if((p.description && p.description.toLowerCase().includes(search))
+        if((p.name && p.name.toLowerCase().includes(search))
         || (p.price && p.price.toString().includes(search))){
           products.push(p);
         }
@@ -64,7 +52,7 @@ export default class MakeBill extends Component {
     }
     updateCart(index, offset) {
       var products = this.state.products;
-      if (products[index].cart + offset < 1 || products[index].cart + offset > products[index].units)  return ;
+      if (products[index].cart + offset < 1 || products[index].cart + offset > products[index].quantity)  return ;
       products[index].cart += offset;
       this.setState({products});
     }
@@ -79,7 +67,7 @@ export default class MakeBill extends Component {
     }
     showCart() {
       console.log(this.state.cart);
-      Actions.showCart({products: this.state.products});
+      Actions.showCart({mid: this.state.mid, products: this.state.products});
     }
     viewProducts(){
         var view = [];
@@ -99,14 +87,14 @@ export default class MakeBill extends Component {
         }
         this.state.products.forEach((product, index) => {
             view.push(
-                <View key={product.description} style={styles.itemContainer}>
+                <View key={product.name} style={styles.itemContainer}>
                   <View style={styles.item} onPress={() => this.select(product)}>
-                    <Text style={styles.itemText}>{product.description}</Text>
+                    <Text style={styles.itemText}>{product.name}</Text>
                     <Text style={styles.itemText}>{product.weight < 1 ? `${Number(product.weight)*1000}g` : `${Number(product.weight)}Kg`}</Text>
                     <Text style={styles.itemText}>Rs. {product.price}</Text>
                     <View style={{flexDirection: 'row'}}>
                       <View style={{flex: 0.5}}>
-                      <Text style={styles.itemText}>{product.units} N</Text>
+                      <Text style={styles.itemText}>{product.quantity} N</Text>
                       </View>
                       <View style={{flex: 0.5}}>
                         {
