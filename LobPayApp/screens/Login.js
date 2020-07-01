@@ -63,7 +63,7 @@ export default class Login extends Component{
           }else if(result["verified"]==="true"){
             if(result["is_merchant"]===false)Actions.customer({text:result["id"]});
             else {
-
+                Actions.searchCustomers({test:result["id"]});
             }
           }
         });
@@ -104,8 +104,8 @@ export default class Login extends Component{
                     <Text >Already have an account? </Text>
                     <TouchableOpacity onPress={this.choose}><Text style={styles.signupButton}>Sign up</Text></TouchableOpacity>
                    {/*Added for Testing components */}
-                    <TouchableOpacity onPress={this.searchCustomers}><Text style={styles.signupButton}> SearchCustomer</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={this.payMerchant}><Text style={styles.signupButton}> PayMerch</Text></TouchableOpacity>
+                    {/* <TouchableOpacity onPress={this.searchCustomers}><Text style={styles.signupButton}> SearchCustomer</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={this.payMerchant}><Text style={styles.signupButton}> PayMerch</Text></TouchableOpacity> */}
         </View>
       </View>
 

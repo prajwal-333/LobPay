@@ -8,7 +8,7 @@ const mercList='http://192.168.18.4:8000/subscribe/merchantlist/';
 const subsList='http://192.168.18.4:8000/subscribe/';
 // let xData=[];
 // let y=[];
-const cusid=2;
+let cusid=2;
 function compare( a, b ) {
   if ( a.distance < b.distance ){
     return -1;
@@ -66,8 +66,8 @@ function UnSubscribe(item){
       });
 }
 export default class Customer extends Component {  
-  constructor(){
-    super()
+  constructor(props){
+    super(props);
     this.state={
       dataSource: [],
       refresh: false,

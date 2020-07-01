@@ -2,8 +2,10 @@ import React,{Component} from 'react';
 import { StyleSheet, Text, View,TextInput,Button ,TouchableOpacity,Alert} from 'react-native';
 import {Actions,Link} from 'react-native-router-flux';
 const InsertMerc='http://192.168.18.4:8000/verify/signup/';//'https://webhook.site/f07ff216-6914-4a8c-b4ac-32df20afc2db';//'http://127.0.0.1:8000/verify/signup/';
+import * as Location from 'expo-location';
 
 async function insertMerchant(params) {
+  console.log("hi1");
   console.log(params);
   try {
       let response = await fetch(InsertMerc, {
@@ -15,6 +17,7 @@ async function insertMerchant(params) {
           body: params
       });
       let responseJson = await response.json();
+      console.log("hi");
       console.log(responseJson["exist"]);
       if(responseJson["exist"]==="true")return "exists";
       else return "sent";
@@ -35,12 +38,28 @@ export default class SignupMerchant extends Component {
           pincode:'',
           accInfo:'',
           password: '',
-         
+          latitude:'',
+          longitude:''
         };}
     
+  _getLocation=async()=>{
+    //cusid=this.state.CustId;
+    const {status} = await Location.requestPermissionsAsync();
+    if(status!=='granted'){
+      console.log('Permissiion Not Granted');
+    }
+    const userLocation = await Location.getCurrentPositionAsync({});
+    console.log(userLocation["coords"]["latitude"].toFixed(6));
+    this.setState({
+      latitude:userLocation["coords"]["latitude"].toFixed(6),
+      longitude:userLocation["coords"]["longitude"].toFixed(6)
+    })}
+     componentDidMount(){
+    this._getLocation();
+   }
     onSignUp() {
         // console.log("hi");
-        const { username,phone,address,pincode,accInfo,password } = this.state;
+        const { username,phone,address,pincode,accInfo,password,latitude,longitude } = this.state;
         const user = {
           mobile:`${phone}`,
           username: `${username}`,
@@ -49,6 +68,8 @@ export default class SignupMerchant extends Component {
           address:  `${address}`,
           account_info: `${accInfo}`,
           pincode: `${pincode}`,
+          lat: `${latitude}`,
+          long: `${longitude}`,
           is_otp: 'false'
         };
         let x=JSON.stringify(user);

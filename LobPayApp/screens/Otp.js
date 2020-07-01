@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { StyleSheet, Text, View,TextInput,Button } from 'react-native';
+import { StyleSheet, Text, View,TextInput,Button,Alert } from 'react-native';
 import signupMerchant from './signupMerchant';
 import { Actions } from 'react-native-router-flux';
 
@@ -21,7 +21,7 @@ async function sentOtp(params) {
         let responseJson = await response.json();
         console.log(responseJson["verified"]);
         if(responseJson["verified"]==="true")return "yes";
-        else return "wrong";
+        else return "no";
         // return responseJson.result; 
     } catch (error) {
         console.error(`Error is : ${error}`);
@@ -63,6 +63,7 @@ onSent(){
             'wrong Otp', // <- this part is optional, you can pass an empty string
             [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'SignupAgain?',onPress:()=> Actions.signupMerchant()},
             ],
             {cancelable: false},
         );
