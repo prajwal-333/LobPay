@@ -24,7 +24,7 @@ export default class Routes extends Component {
         return (
             <Router barButtonIconStyle ={styles.barButtonIconStyle}
                 hideNavBar={false} 
-                navigationBarStyle={{backgroundColor: '#1565c0',}} 
+                navigationBarStyle={{backgroundColor: '#002299',}} 
                 titleStyle={{color: 'white',}}
             >
                 <Stack key="root">

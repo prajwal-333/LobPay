@@ -90,10 +90,10 @@ export default class ShowCart extends Component {
                       </View>
                       <View style={{flex: 0.5}}>
                         <View style={{flexDirection: 'row-reverse'}}>
-                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
+                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
                             <View style={{flex: 0.4,paddingHorizontal: 5,alignItems: 'center'}}><Text style={styles.itemText}>{product.cart}</Text></View>
-                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
-                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'x'} onPress={() => this.removeFromCart(index)}/></View>
+                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
+                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'x'} onPress={() => this.removeFromCart(index)}/></View>
                         </View>
                       </View>
                     </View>
@@ -187,12 +187,14 @@ export default class ShowCart extends Component {
           <View style={styles.buttonsContainer}>
             <View style={{flex: 0.5, padding: 5}}>
               <Button
+                color='#fbc41b'
                 title={'Add More Products'}
                 onPress={() => this.goBack()}
               />
             </View>
             <View style={{flex: 0.5, padding: 5}}>
               <Button
+                color='#fbc41b'
                 title={'Make Payment'}
                 onPress={() => this.makePayment()}
               />

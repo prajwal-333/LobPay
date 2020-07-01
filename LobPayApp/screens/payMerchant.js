@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { StyleSheet, View,TextInput,Text,Button,Alert} from 'react-native';
+import { StyleSheet, View,TextInput,Text,Button,Alert,TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
 
@@ -30,31 +30,33 @@ export default class PayMerchant extends Component {
     render() {
         return(
         <View style={styles.container}>
-          <View style={styles.inputContainer}>
+          <View style={styles.inputView}>
           <TextInput
             value={this.state.username}
             onChangeText={(username) => this.setState({ username })}
             placeholder={'Customer Mobile or Username'}
             keyboardType='default'
-            style={styles.input}
+            style={styles.inputText}
           />
           </View>
-          <View style={styles.inputContainer}>
+          <View style={styles.inputView}>
           <TextInput
             value={this.state.amount}
             textContentType='creditCardNumber'
             onChangeText={(amount) => this.setState({ amount })}
             placeholder={'Bill Amount'}
             keyboardType='number-pad'
-            style={styles.input}
+            style={styles.inputText}
           />
           </View>
-          <View style={{padding: 10}}>
-          <Button
+          <TouchableOpacity onPress={this.makePayment.bind(this)} style={styles.loginBtn}>
+          <Text style={styles.loginText}>Make Payment</Text>
+        </TouchableOpacity>
+          {/* <Button
             title={'Make Payment'}
             onPress={this.makePayment.bind(this)}
-          />
-          </View>
+          /> */}
+          
         </View>
         );
     }
@@ -82,4 +84,36 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
   },
+  inputView:{
+    width:"80%",
+    backgroundColor:"#002299",
+    borderRadius:25,
+    height:80,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:10
+  },
+  inputText:{
+    height:70,
+    color:"white",
+    fontSize: 18,
+  },
+  forgot:{
+    color:"white",
+    fontSize:11
+  },
+  loginBtn:{
+    width:"80%",
+    backgroundColor:"#fbc41b",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
+  },
+  loginText:{
+    color:"white",
+    fontSize: 18,
+  }
 });

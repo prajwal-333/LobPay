@@ -71,31 +71,40 @@ export default class SignupCustomer extends Component {
     render(){
         return(
         <View style={styles.container}>
+        <View style={styles.inputView} >
         <TextInput
           value={this.state.username}
           onChangeText={(username) => this.setState({ username })}
           placeholder={'Username'}
-          style={styles.input}
+          style={styles.inputText}
         />
+         </View>
+        <View style={styles.inputView} >
         <TextInput
           value={this.state.phone}
           onChangeText={(phone) => this.setState({ phone })}
           placeholder={'phone'}
           keyboardType='number-pad'
-          style={styles.input}
+          style={styles.inputText}
         />
+         </View>
+         <View style={styles.inputView} >
         <TextInput
           value={this.state.password}
           onChangeText={(password) => this.setState({ password })}
           placeholder={'Password'}
           secureTextEntry={true}
-          style={styles.input}
+          style={styles.inputText}
         />
-        <Button
+         </View>
+        <TouchableOpacity onPress={this.onSignUp.bind(this)} style={styles.loginBtn}>
+          <Text style={styles.loginText}>SIGNUP</Text>
+        </TouchableOpacity>
+        {/* <Button
           title={'Signup'}
           style={styles.input}
           onPress={this.onSignUp.bind(this)}
-        />
+        /> */}
         { <View style={styles.signupTextCont}> 
                     <Text >Already have an account? </Text>
                     <TouchableOpacity onPress={this.goBack}><Text style={styles.signupButton}>Login</Text></TouchableOpacity>
@@ -136,6 +145,36 @@ const styles = StyleSheet.create({
       color: '#12799f',
       fontSize:16,
       fontWeight: '500'
+  },
+  inputView:{
+    width:"80%",
+    backgroundColor:"#002299",
+    borderRadius:25,
+    height:50,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20
+  },
+  inputText:{
+    height:50,
+    color:"white"
+  },
+  forgot:{
+    color:"white",
+    fontSize:11
+  },
+  loginBtn:{
+    width:"80%",
+    backgroundColor:"#fbc41b",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
+  },
+  loginText:{
+    color:"white"
   }
 });
 module.exports = SignupCustomer;

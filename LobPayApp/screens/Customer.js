@@ -1,5 +1,5 @@
 import React, { Component,useState,useEffect } from "react";
-import { FlatList, StyleSheet, Text, View, InteractionManager,Item,TouchableHighlight, Button } from "react-native";
+import { FlatList, StyleSheet, Text, View, InteractionManager,Item,TouchableHighlight, Button,TouchableOpacity } from "react-native";
 
 // import {Location,Permissions}from 'expo';
 import * as Location from 'expo-location';
@@ -138,27 +138,39 @@ export default class Customer extends Component {
   render() {  
     return (  
       <View style={styles.container}>
-        <FlatList
+        <FlatList style={{flex: 1}}
       data={this.state.dataSource }
       extraData={this.state}
       renderItem={({item}) => (
-        <TouchableHighlight
-          key={item["id"]}
-          onPress={() => this._onPress(item)}>
-          <View style={{flex:1,flexDirection:'row' ,backgroundColor: 'white',justifyContent:'space-evenly'}}>
-            <Text style={{fontSize:18,}}>{item["address"]}</Text>
-            <Text style={{fontSize:18,}}>{item["distance"]}</Text>
+        // <TouchableHighlight
+        //   key={item["id"]}
+        //   onPress={() => this._onPress(item)}>
+          <View style={{borderWidth: 1,paddingHorizontal: 20, paddingVertical: 10,alignItems:'center'}}>
+            <Text style={{fontSize:18,fontWeight: '600'}}>SHOPNAME:{item["address"]}</Text>
+            <Text style={{fontSize:18,fontWeight: '600'}}>DISTANCE: {item["distance"]}</Text>
+            <Text style={{fontSize:18,fontWeight: '600'}}>SUBSCRIBERS: {item["subscribers"]}</Text>
+            {/* {item["subscribed"]==='false' &&
+            <Button title={'Subscribe'} onPress={()=>{console.log(Subscribe(item));this.handleClick();
+            this.handleClick();
+            }}/>} */}
             {item["subscribed"]==='false' &&
-            <Button title={'Subscribe'} onPress={()=>{console.log(Subscribe(item));this.handleClick();}}/>}
-            {item["subscribed"]==='true' && <Button title={'UnSubscribe'} onPress={()=>{UnSubscribe(item);this.handleClick();}}/>}
+             <TouchableOpacity onPress={()=>{console.log(Subscribe(item));this.handleClick();this.handleClick();this.handleClick();}} style={styles.loginBtn}>
+            <Text style={styles.loginText}>Subscribe</Text>
+            </TouchableOpacity>}
+            {/* {item["subscribed"]==='true' && <Button title={'UnSubscribe'} onPress={()=>{UnSubscribe(item);this.handleClick();this.handleClick();this.handleClick();}}/>} */}
+            {item["subscribed"]==='true' &&
+             <TouchableOpacity onPress={()=>{UnSubscribe(item);this.handleClick();this.handleClick();this.handleClick();}} style={styles.loginBtn}>
+            <Text style={styles.loginText}>UnSubscribe</Text>
+            </TouchableOpacity>}
              </View>
-        </TouchableHighlight>)}
+        // </TouchableHighlight>
+        )}
         keyExtractor={(item,index) => item+index}
-        ItemSeparatorComponent={(item)=>{
-          return(
-          <View style={{height:1,width:'100%',backgroundColor:'black'}}>
-          </View>)
-        }}
+        // ItemSeparatorComponent={(item)=>{
+        //   return(
+        //   <View style={{height:1,width:'100%',backgroundColor:'black'}}>
+        //   </View>)
+        // }}
         />
       </View>
     );  
@@ -184,6 +196,36 @@ const styles = StyleSheet.create({
       backgroundColor: "#000066",
       borderWidth: 1,
       borderRadius: 10
+  },
+  inputView:{
+    width:"80%",
+    backgroundColor:"#002299",
+    borderRadius:25,
+    height:50,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20
+  },
+  inputText:{
+    height:50,
+    color:"white"
+  },
+  forgot:{
+    color:"white",
+    fontSize:11
+  },
+  loginBtn:{
+    width:"80%",
+    backgroundColor:"#d90000",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
+  },
+  loginText:{
+    color:"black"
   }
 });
 module.exports = Customer;

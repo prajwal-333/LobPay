@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,ScrollView,TouchableOpacity,Image,Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
 
 export default class AddProduct extends Component {
     constructor(props) {
@@ -74,12 +74,14 @@ export default class AddProduct extends Component {
             <View style={{flex: 0.5, padding: 5}}>
               <Button
                 title={'Cancel'}
+                color='#fbc41b'
                 onPress={() => this.onCancel()}
               />
             </View>
             <View style={{flex: 0.5, padding: 5}}>
               <Button
                 title={'Confirm'}
+                color='#fbc41b'
                 onPress={() => this.onConfirm()}
               />
             </View>

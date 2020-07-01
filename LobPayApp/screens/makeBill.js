@@ -111,12 +111,12 @@ export default class MakeBill extends Component {
                       <View style={{flex: 0.5}}>
                         {
                           (product.cart == 0)
-                           ? <View style={{paddingHorizontal: 5}}><Button title={'Add To Cart'} onPress={() => {this.addToCart(index)}}/></View>
+                           ? <View style={{paddingHorizontal: 5}}><Button color='#fbc41b' title={'Add To Cart'} onPress={() => {this.addToCart(index)}}/></View>
                            : <View style={{flexDirection: 'row-reverse'}}>
-                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
+                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
                                 <View style={{flex: 0.4,paddingHorizontal: 5,alignItems: 'center'}}><Text style={styles.itemText}>{product.cart}</Text></View>
-                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
-                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'x'} onPress={() => this.removeFromCart(index)}/></View>
+                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
+                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'x'} onPress={() => this.removeFromCart(index)}/></View>
                              </View>
                         }
                       </View>
@@ -155,6 +155,7 @@ export default class MakeBill extends Component {
             <View style={{flex: 0.5, padding: 5}}>
               <Button
                 title={'Show Cart'}
+                color='#fbc41b'
                 onPress={() => this.showCart()}
               />
             </View>
