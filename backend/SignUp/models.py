@@ -6,34 +6,84 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
+from datetime import date
 
 class Customers(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     pin = models.IntegerField(blank=True, null=True)
+    checkout_id = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'Customers'
 
 
+class Inventory(models.Model):
+    name = models.TextField(blank=True, null=True)
+    price = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Inventory'
+
+
+class Invoice(models.Model):
+    cid = models.ForeignKey(Customers, models.DO_NOTHING, db_column='cid')
+    inv_date = models.DateField(blank=True, null=True, default=date.today)
+    total_price = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        # managed = False
+        db_table = 'Invoice'
+
+
+class Invoiceitem(models.Model):
+    inv = models.ForeignKey(Invoice, models.DO_NOTHING)
+    item = models.ForeignKey(Inventory, models.DO_NOTHING)
+    quantity = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'InvoiceItem'
+
+
 class Merchants(models.Model):
     id = models.OneToOneField('Users', models.DO_NOTHING, db_column='id', primary_key=True)
     address = models.TextField(blank=True, null=True)
     account_info = models.TextField(blank=True, null=True)
-    lat = models.DecimalField(blank=True, null=True, max_digits=9, decimal_places=6) #from location api
-    long = models.DecimalField(blank=True, null=True, max_digits=9, decimal_places=6) #from location api
     pin = models.IntegerField(blank=True, null=True)
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
+    subscribers = models.IntegerField(default=0)
 
     class Meta:
-      #  managed = False
+        # managed = False
         db_table = 'Merchants'
+
+
+class MerchantsInventory(models.Model):
+    mid = models.ForeignKey(Merchants, models.DO_NOTHING, db_column='mid')
+    quantity = models.IntegerField()
+    price = models.FloatField(blank=True, null=True)
+    item = models.ForeignKey(Inventory, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'Merchants_Inventory'
+
+
+class SignupPhonemodel(models.Model):
+    mobile = models.IntegerField(db_column='Mobile')  # Field name made lowercase.
+    isverified = models.BooleanField(db_column='isVerified')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'SignUp_phonemodel'
 
 
 class Subscription(models.Model):
     cid = models.ForeignKey(Customers, models.DO_NOTHING, db_column='cid')
     mid = models.ForeignKey(Merchants, models.DO_NOTHING, db_column='mid')
-    checkout_id = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -161,30 +211,3 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
-
-
-class Sus(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'sus'
-
-
-class Sus2(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'sus2'
-
-
-class Sus5(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'sus5'

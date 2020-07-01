@@ -20,4 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('verify/', include('SignUp.urls')),
     path('subscribe/', include('Subscribe.urls')),
+    path('inv/', include('Invoices.urls')),
+    path('payment/', include('Payments.urls'))
 ]

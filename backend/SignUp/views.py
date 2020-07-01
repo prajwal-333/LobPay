@@ -25,40 +25,45 @@ class getPhoneNumberRegistered(APIView):
                 password = request.data["password"]
                 mobile_number = request.data["mobile"]
                 merchant = request.data["merchant"]
-                 # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
-                url = "https://gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com/otp/generate/"+str(mobile_number)
+                # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
+                # url = "https://gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com/otp/generate/"+str(mobile_number)
 
-                querystring = {"getOTP":"true","duration":"100","digits":"5","message":"Your LobPay verification code is OTP_VALUE"}
+                # querystring = {"getOTP":"true","duration":"100","digits":"5","message":"Your LobPay verification code is OTP_VALUE"}
 
-                headers = {
-                    'x-rapidapi-host': "gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com",
-                    'x-rapidapi-key': "a8e07551f2msh8f97f4821a0a0c5p1afdbbjsn23fb1d0d27ed"
-                }
-
-                response = requests.request("GET", url, headers=headers, params=querystring)
-                if ('errorCode' in response.json()) and response.json()['errorCode']==0:
-                    msg = "true"
-                else:
-                    msg = "false"
-                
-                new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= response.json()["OTP"], is_verified=False, is_merchant=merchant)
+                # headers = {
+                #     "x-rapidapi-host": "gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com",
+	            #     "x-rapidapi-key": "8b4036ce97mshf5634fcbf7ef9a4p19dd28jsne9faea7cd412",
+                # }
+            
+                # response = requests.request("GET", url, headers=headers, params=querystring)
+                # print(response.json())
+                # if ('errorCode' in response.json()) and response.json()['errorCode']==0:
+                #     msg = "true"
+                # else:
+                #     msg = "false"
+                msg = "true"
+                otp="4395"
+                new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= otp, is_verified=False, is_merchant=merchant)
+                # new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= response.json()["OTP"], is_verified=False, is_merchant=merchant)
                 Mobile = Users.objects.get(mobile_number=mobile_number)
                 id = int(getattr(Mobile, "id"))
                 if merchant == 1:
                     address = request.data["address"]
                     account_info = request.data["account_info"]
                     pincode = request.data["pincode"]
-                    if ('lat' in request.data) and ('long' in request.data):
-                        lat = request.data["lat"]
-                        long = request.data["long"]
-                        new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode, lat=lat, long=long)
-                    else:
-                        new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode)
+                    lat = request.data["lat"]
+                    long = request.data["long"]
+                    print("asdasdasd",lat,long)
+                    new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode, lat=lat, long=long, subscribers=0)
                 else:
                     # print("here I am")
                     pincode = request.data["pincode"]
-                    new_customer = Customers.objects.create(id=Mobile, pin=pincode)
-                              
+                    if 'checkout_id' in request.data: 
+                        checkout_id = request.data["checkout_id"]
+                    else:
+                        checkout_id = ""
+                    new_customer = Customers.objects.create(id=Mobile, pin=pincode, checkout_id=checkout_id)
+                    
             return Response({"success":msg} , status=200)
         else:
             mobile_number = request.data["mobile"]
@@ -77,6 +82,7 @@ class getPhoneNumberRegistered(APIView):
                 return Response({"verified":"true"} , status=200)
             except:
                 return Response({"success":"false","problem":"Wrong Mobile Number"},status=400)
+
 
 class signIn(APIView):
     # This Method verifies the Signin Information
