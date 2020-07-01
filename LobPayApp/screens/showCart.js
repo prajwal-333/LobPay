@@ -1,13 +1,14 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,ScrollView,TouchableOpacity,Image,Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
 
 export default class ShowCart extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
+            mid: props.mid,
             search: '',
             products: props.products ? props.products : [],
             data: [],
@@ -17,19 +18,6 @@ export default class ShowCart extends Component {
             tAmount: 0,
         };
       }
-    componentDidMount() {
-        this.setState({data : this.state.products}); // Dummy Data for test
-        // fetch(apiHost + '/subscribe/productlist/1', {method: 'GET'})
-        //   .then((response) => response.json())
-        //   .then((responseJson) => {
-        //     this.setState({data : responseJson, products : responseJson});
-        //     console.log('data :',this.state.data);
-        //   })
-        //   .catch((e) => {
-        //     console.log(e.message);
-        //     Alert.alert(e.message);
-        //   });
-    }
     onSearch(search) {
       var data = this.state.data;
       var products = [];
@@ -37,7 +25,7 @@ export default class ShowCart extends Component {
       console.log('Search :',search);
       data.forEach((p) => {
         if (p.cart > 0
-        && ((p.description && p.description.toLowerCase().includes(search))
+        && ((p.name && p.name.toLowerCase().includes(search))
         || (p.price && p.price.toString().includes(search)))){
           products.push(p);
         }
@@ -79,10 +67,9 @@ export default class ShowCart extends Component {
             if(product.cart > 0) {
             this.state.bAmount += product.price * product.cart;
             view.push(
-                <View key={product.description} style={styles.itemContainer}>
+                <View key={product.name} style={styles.itemContainer}>
                   <View style={styles.item} onPress={() => this.select(product)}>
-                    <Text style={styles.itemText}>{product.description}</Text>
-                    <Text style={styles.itemText}>{product.weight < 1 ? `${Number(product.weight)*1000}g` : `${Number(product.weight)}Kg`}</Text>
+                    <Text style={styles.itemText}>{product.name}</Text>
                     <Text style={styles.itemText}>Rs. {product.price}</Text>
                     <View style={{flexDirection: 'row'}}>
                       <View style={{flex: 0.5}}>
@@ -124,7 +111,7 @@ export default class ShowCart extends Component {
         if(p.cart > 0)  cart.push(p);
       })
       console.log({bill: {cart: cart, bAmount: this.state.bAmount, discount: this.state.discount, tAmount: this.state.tAmount}});
-      Actions.searchCustomers({bill: {cart: cart, bAmount: this.state.bAmount, discount: this.state.discount, tAmount: this.state.tAmount}});
+      Actions.searchCustomers({mid: this.state.mid, bill: {cart: cart, bAmount: this.state.bAmount, discount: this.state.discount, tAmount: this.state.tAmount}});
     }
     render() {
         return(

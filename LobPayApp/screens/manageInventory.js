@@ -1,43 +1,30 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,ScrollView,TouchableOpacity,Image,Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
 
 export default class ManageInventory extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
+            mid: props.mid,
             search: '',
-            products: props.products ?  props.products : [   // Dummy Data for testing without API
-                {
-                    description: "Biscuits",
-                    weight: 0.150,
-                    price: 25,
-                    units: 15,
-                },
-                {
-                    description: "Potato Chips",
-                    weight: 0.200,
-                    price: 20,
-                    units: 10,
-                }
-            ],
+            products: props.products ?  props.products : [],
             data: [],
         };
       }
     componentDidMount() {
-        this.setState({data : this.state.products}); // Dummy Data for test
-        // fetch(apiHost + '/subscribe/productlist/1', {method: 'GET'})
-        //   .then((response) => response.json())
-        //   .then((responseJson) => {
-        //     this.setState({data : responseJson, products : responseJson});
-        //     console.log('data :',this.state.data);
-        //   })
-        //   .catch((e) => {
-        //     console.log(e.message);
-        //     Alert.alert(e.message);
-        //   });
+        fetch(apiHost + '/inv/merchantInventory/' + this.state.mid, {method: 'GET'})
+          .then((response) => response.json())
+          .then((responseJson) => {
+            this.setState({data : responseJson, products : responseJson});
+            console.log('data :',this.state.data);
+          })
+          .catch((e) => {
+            console.log(e.message);
+            Alert.alert(e.message);
+          });
     }
     onSearch(search) {
       var data = this.state.data;
@@ -45,7 +32,7 @@ export default class ManageInventory extends Component {
       search = search.toLowerCase();
       console.log('Search :',search);
       data.forEach((p) => {
-        if((p.description && p.description.toLowerCase().includes(search))
+        if((p.name && p.name.toLowerCase().includes(search))
         || (p.price && p.price.toString().includes(search))){
           products.push(p);
         }
@@ -57,11 +44,11 @@ export default class ManageInventory extends Component {
     }
     addProduct(){
       console.log('Add Product');
-      Actions.addProduct({products: this.state.data});
+      Actions.addProduct({mid:this.state.mid, products: this.state.data});
     }
     updateProduct(index) {
       console.log('Edit Product',this.state.data[index]);
-      Actions.push('addProduct',{title: 'Update Product',edit: index,products: this.state.data});
+      Actions.push('addProduct',{title: 'Update Product', mid:this.state.mid, edit: index,products: this.state.data});
     }
     viewProducts(){
         var view = [];
@@ -81,12 +68,11 @@ export default class ManageInventory extends Component {
         }
         this.state.products.forEach((product, index) => {
             view.push(
-                <View key={product.description} style={styles.itemContainer}>
+                <View key={product.name} style={styles.itemContainer}>
                   <TouchableOpacity style={styles.item} onPress={() => this.updateProduct(index)}>
-                    <Text style={styles.itemText}>{product.description}</Text>
-                    <Text style={styles.itemText}>{product.weight < 1 ? `${Number(product.weight)*1000}g` : `${Number(product.weight)}Kg`}</Text>
+                    <Text style={styles.itemText}>{product.name}</Text>
                     <Text style={styles.itemText}>Rs. {product.price}</Text>
-                    <Text style={styles.itemText}>{product.units} N</Text>
+                    <Text style={styles.itemText}>{product.quantity} N</Text>
                   </TouchableOpacity>
                 </View>
             );

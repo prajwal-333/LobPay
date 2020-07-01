@@ -1,14 +1,15 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,Alert,TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
 
 export default class PayMerchant extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            mid: props.mid,
             username: props.customer ? props.customer.username : '',
-            amount: props.bill ? props.bill.tAmount : '',
+            amount: props.bill ? String(props.bill.tAmount) : '',
             bill: props.bill ? props.bill : undefined,
         };
     }
@@ -17,15 +18,17 @@ export default class PayMerchant extends Component {
     }
     makePayment() {
       console.log(this.state);
-      // fetch(apiHost + '/pay', {method: 'POST', body: this.state})
-      //   .then((response) => response.json())
-      //   .then((responseJson) => {
-      //     console.log(responseJson);
-      //   })
-      //   .catch((e) => {
-      //     console.log(e.message);
-      //     Alert.alert(e.message);
-      //   });
+      console.log('Visa Checkout');
+
+      fetch(apiHost + '/pay/' + this.state.cid + '/' + this.state.mid, {method: 'POST', body: this.state.bill})
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log(responseJson);
+        })
+        .catch((e) => {
+          console.log(e.message);
+          Alert.alert(e.message);
+        });
     }
     render() {
         return(
