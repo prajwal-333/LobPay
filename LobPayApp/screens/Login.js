@@ -63,7 +63,7 @@ export default class Login extends Component{
           }else if(result["verified"]==="true"){
             if(result["is_merchant"]===false)Actions.customer({text:result["id"]});
             else {
-                Actions.searchCustomers({test:result["id"]});
+                Actions.merchantOperations({mid:result["id"]});
             }
           }
         });

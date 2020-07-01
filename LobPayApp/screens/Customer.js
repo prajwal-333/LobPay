@@ -5,7 +5,7 @@ import { FlatList, StyleSheet, Text, View, InteractionManager,Item,TouchableHigh
 import * as Location from 'expo-location';
 
 const mercList='http://192.168.18.4:8000/subscribe/merchantlist/';
-const subsList='http://192.168.18.4:8000/subscribe/';
+const subsList='http://192.168.18.4:8000/subscribe/subscription/';
 // let xData=[];
 // let y=[];
 let cusid=2;

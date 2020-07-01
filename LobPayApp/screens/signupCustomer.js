@@ -15,6 +15,7 @@ async function insertMerchant(params) {
           body: params
       });
       let responseJson = await response.json();
+      console.log(responseJson);
       console.log(responseJson["exist"]);
       if(responseJson["exist"]==="true")return "exists";
       else return "sent";

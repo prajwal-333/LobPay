@@ -57,7 +57,7 @@ class getPhoneNumberRegistered(APIView):
                     new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode, lat=lat, long=long, subscribers=0)
                 else:
                     # print("here I am")
-                    pincode = request.data["pincode"]
+                    pincode = 567123 #request.data["pincode"]
                     if 'checkout_id' in request.data: 
                         checkout_id = request.data["checkout_id"]
                     else:

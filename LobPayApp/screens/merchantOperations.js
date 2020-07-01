@@ -7,6 +7,7 @@ export default class MerchantOperations extends Component {
         super(props);
         
         this.state = {
+          mid:this.props.mid,
         };
     }
     render() {
@@ -15,25 +16,25 @@ export default class MerchantOperations extends Component {
           <View style={styles.buttonContainer}>
           <Button
             title={'Manage Inventory'}
-            onPress={() => Actions.manageInventory()}
+            onPress={() => Actions.manageInventory({mid:this.state.mid})}
           />
           </View>
           <View style={styles.buttonContainer}>
           <Button
             title={'Make Bill'}
-            onPress={() => Actions.makeBill()}
+            onPress={() => Actions.makeBill({mid:this.state.mid})}
           />
           </View>
           <View style={styles.buttonContainer}>
           <Button
             title={'Search Customer'}
-            onPress={() => Actions.searchCustomers()}
+            onPress={() => Actions.searchCustomers({mid:this.state.mid})}
           />
           </View>
           <View style={styles.buttonContainer}>
           <Button
             title={'Make Payment'}
-            onPress={() => Actions.payMerchant()}
+            onPress={() => Actions.payMerchant({mid:this.state.mid})}
           />
           </View>
         </View>

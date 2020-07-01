@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
 
 export default class PayMerchant extends Component {
     constructor(props) {
