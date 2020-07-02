@@ -55,7 +55,10 @@ export default class PayMerchant extends Component {
             title={'Make Payment'}
             onPress={this.makePayment.bind(this)}
           /> */}
-          
+          { <View style={styles.signupTextCont}> 
+                    <Text >New Here? </Text>
+                    <TouchableOpacity onPress={this.Web}><Text style={styles.signupButton}>Reister</Text></TouchableOpacity>
+            </View>        }
         </View>
         );
     }
@@ -114,5 +117,21 @@ const styles = StyleSheet.create({
   loginText:{
     color:"white",
     fontSize: 18,
+  },
+  signupTextCont: {
+    flexGrow: 0,
+    justifyContent: 'center',
+    //alignItems: 'flex-end',
+    paddingVertical: 16,
+    flexDirection: 'row'
+  },
+  signupText: {
+    color: '#12799f', 
+    fontSize:16
+  },
+  signupButton: {
+      color: '#12799f',
+      fontSize:16,
+      fontWeight: '500'
   }
 });
