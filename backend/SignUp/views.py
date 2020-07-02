@@ -25,26 +25,27 @@ class getPhoneNumberRegistered(APIView):
                 password = request.data["password"]
                 mobile_number = request.data["mobile"]
                 merchant = request.data["merchant"]
+                # print("hihihi")
                 # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
-                # url = "https://gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com/otp/generate/"+str(mobile_number)
+                url = "https://gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com/otp/generate/"+str(mobile_number)
 
-                # querystring = {"getOTP":"true","duration":"100","digits":"5","message":"Your LobPay verification code is OTP_VALUE"}
+                querystring = {"getOTP":"true","duration":"100","digits":"5","message":"Your LobPay verification code is OTP_VALUE"}
 
-                # headers = {
-                #     "x-rapidapi-host": "gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com",
-	            #     "x-rapidapi-key": "8b4036ce97mshf5634fcbf7ef9a4p19dd28jsne9faea7cd412",
-                # }
+                headers = {
+                    "x-rapidapi-host": "gurubrahma-smsly-sms-to-india-v1.p.rapidapi.com",
+	                "x-rapidapi-key": "8b4036ce97mshf5634fcbf7ef9a4p19dd28jsne9faea7cd412",
+                }
             
-                # response = requests.request("GET", url, headers=headers, params=querystring)
-                # print(response.json())
-                # if ('errorCode' in response.json()) and response.json()['errorCode']==0:
-                #     msg = "true"
-                # else:
-                #     msg = "false"
-                msg = "true"
-                otp="4395"
-                new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= otp, is_verified=False, is_merchant=merchant)
-                # new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= response.json()["OTP"], is_verified=False, is_merchant=merchant)
+                response = requests.request("GET", url, headers=headers, params=querystring)
+                print(response.json())
+                if ('errorCode' in response.json()) and response.json()['errorCode']==0:
+                    msg = "true"
+                else:
+                    msg = "false"
+                # msg = "true"
+                # otp="4395"
+                # new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= otp, is_verified=False, is_merchant=merchant)
+                new_user = Users.objects.create(username=username, password=password, mobile_number=int(mobile_number),otp= response.json()["OTP"], is_verified=False, is_merchant=merchant)
                 Mobile = Users.objects.get(mobile_number=mobile_number)
                 id = int(getattr(Mobile, "id"))
                 if merchant == 1:
@@ -57,7 +58,7 @@ class getPhoneNumberRegistered(APIView):
                     new_merchant = Merchants.objects.create(id=Mobile,address=address, account_info=account_info,pin=pincode, lat=lat, long=long, subscribers=0)
                 else:
                     # print("here I am")
-                    pincode = 567123 #request.data["pincode"]
+                    pincode = request.data["pincode"]
                     if 'checkout_id' in request.data: 
                         checkout_id = request.data["checkout_id"]
                     else:
@@ -81,6 +82,7 @@ class getPhoneNumberRegistered(APIView):
                     return Response({"verified":"False","problem":"wrong otp"} , status=409)
                 return Response({"verified":"true"} , status=200)
             except:
+                print("hihihihi")
                 return Response({"success":"false","problem":"Wrong Mobile Number"},status=400)
 
 
