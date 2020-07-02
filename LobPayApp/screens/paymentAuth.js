@@ -12,7 +12,6 @@ export default class PaymentAuth extends Component{
       mobile: String(props.mobile),
       password: '',
       bill: props.bill,
-      amount: props.amount,
     };
     console.log(this.state);
   }
@@ -38,8 +37,56 @@ export default class PaymentAuth extends Component{
             console.log('Visa Checkout');
             // Add Payment Gateway Route
 
-            // Add below line to Succeful Payment part
-            Actions.push('merchantOperations', {mid: this.state.mid});
+            // CallId
+            var callId = "7445029006194309402";
+            var orderId = 54321; // Increament on Usage
+            var bill = this.state.bill;
+            var body = {
+                callId: callId,
+                disc : bill.discount,
+                subtotal : bill.tAmount,
+                total : bill.tAmount,
+                first_time : false,
+                orderId : orderId
+            }
+            // Payment 
+            fetch(apiHost + '/payment/pay/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                if(responseJson && responseJson.payment == "success") {
+                    // Add below line to Succeful Payment part
+                    Actions.push('merchantOperations', {mid: this.state.mid});
+                }
+                else {
+                    Alert.alert(
+                        'Payment Failed',
+                        'Refund will be processed if your Account is debited',
+                        [
+                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                        ],
+                        {cancelable: false},
+                    );
+                }
+            })
+            .catch((e) => {
+                console.log(e.message);
+                Alert.alert(
+                    'Error',
+                    e.message,
+                    [
+                        {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    ],
+                    {cancelable: false},
+                );
+            });
         }
         else {
             Alert.alert(
@@ -56,6 +103,7 @@ export default class PaymentAuth extends Component{
         console.log(e.message);
         Alert.alert(
             'Error',
+            e.message,
             [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
             ],

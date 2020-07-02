@@ -17,19 +17,13 @@ export default class PayMerchant extends Component {
         Actions.pop();
     }
     makePayment() {
+      if(this.state.bill === undefined) {
+        this.state.bill = {};
+        this.state.bill.bAmount = this.state.amount;
+        this.state.bill.tAmount = this.state.amount;
+        this.state.bill.discount = "";
+      }
       console.log(this.state);
-      // Redirect to Visa Checkout
-      // fetch(apiHost + '/pay/' + this.state.cid + '/' + this.state.mid, {method: 'POST', body: this.state.bill})
-      //   .then((response) => response.json())
-      //   .then((responseJson) => {
-      //     console.log(responseJson);
-      //   })
-      //   .catch((e) => {
-      //     console.log(e.message);
-      //     Alert.alert(e.message);
-      //   });
-      //  
-      // Update Invoice for Customers
       Actions.paymentAuth(this.state);
     }
     render() {
