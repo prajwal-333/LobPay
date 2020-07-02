@@ -77,7 +77,7 @@ class customerList(APIView):
             # print(customer.id.username)
             cus = {}
             cus["username"] = customer.id.username
-            cus["id"] = customer.id.id
+            cus["mobile"] = customer.id.mobile_number
             customerData.append(cus)
         
         return JsonResponse(customerData, safe=False)

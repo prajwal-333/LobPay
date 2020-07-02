@@ -78,7 +78,7 @@ export default class SearchCustomers extends Component {
         );
         this.state.customers.forEach((customer) => {
             view.push(
-                <View key={customer.id} style={styles.itemContainer}>
+                <View key={customer.mobile} style={styles.itemContainer}>
                   <TouchableOpacity style={styles.item} onPress={() => this.payMerchant(customer)}>
                     <Text style={styles.itemText}>{customer.username}</Text>
                     <Text style={styles.itemText}>{customer.mobile}</Text>

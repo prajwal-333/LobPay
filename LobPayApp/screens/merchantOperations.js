@@ -5,7 +5,7 @@ import {Actions} from 'react-native-router-flux';
 export default class MerchantOperations extends Component {
     constructor(props) {
         super(props);
-        
+        if(props.mid === undefined || props.mid === null || props.mid === 0)  Actions.replace('login');
         this.state = {
           mid: props.mid,
         };

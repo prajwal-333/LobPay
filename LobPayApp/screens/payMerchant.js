@@ -8,7 +8,7 @@ export default class PayMerchant extends Component {
         super(props);
         this.state = {
             mid: props.mid,
-            username: props.customer ? props.customer.username : '',
+            mobile: props.customer ? String(props.customer.mobile) : '',
             amount: props.bill ? String(props.bill.tAmount) : '',
             bill: props.bill ? props.bill : undefined,
         };
@@ -31,16 +31,16 @@ export default class PayMerchant extends Component {
       //   });
       //  
       // Update Invoice for Customers
-      Actions.push('merchantOperations');
+      Actions.push('merchantOperations', {mid: this.state.mid});
     }
     render() {
         return(
         <View style={styles.container}>
           <View style={styles.inputView}>
           <TextInput
-            value={this.state.username}
-            onChangeText={(username) => this.setState({ username })}
-            placeholder={'Customer Mobile or Username'}
+            value={this.state.mobile}
+            onChangeText={(mobile) => this.setState({ mobile })}
+            placeholder={'Customer Mobile Number'}
             keyboardType='default'
             style={styles.inputText}
           />
