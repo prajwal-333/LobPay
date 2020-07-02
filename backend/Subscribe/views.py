@@ -85,20 +85,25 @@ class customerList(APIView):
 
 class customerCheckoutId(APIView):
     @staticmethod
-    def get(request, cid):
+    def get(request, mobile):
         try:
-            s = Customers.objects.get(id=cid)
-            return Response({"Checkout Obtain":"success","checkout_id":s.checkout_id},status=200)
+            s = Users.objects.get(mobile_number=mobile)
+            p = Customers.objects.get(id = s)
+            if not p.checkout_id == "":
+                return Response({"Checkout Obtain":"success","checkout_id":p.checkout_id},status=200)
         except:
             return Response({"Checkout Obtain":"failed"},status=400)
-
+        finally:
+            return Response({"Checkout Obtain":"failed"},status=400)
+        
     @staticmethod
-    def put(request, cid):
+    def put(request, mobile):
         try:
-            s = Customers.objects.get(id=cid)
-            s.checkout_id = request.data["checkout_id"]
+            s = Users.objects.get(mobile_number=mobile)
+            p = Customers.objects.get(id = s)
+            p.checkout_id = request.data["checkout_id"]
             # print(request.data["checkout_id"])
-            s.save()
+            p.save()
             return Response({"Set checkout":"success"},status=200)
         except:
             return Response({"Issue":"Customer not subscribed to the merchant"},status=400)
