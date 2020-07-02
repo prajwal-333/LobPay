@@ -15,6 +15,7 @@ import MakeBill from './makeBill';
 import ShowCart from './showCart';
 import SearchCustomers from './searchCustomers';
 import PayMerchant from './payMerchant';
+import PaymentAuth from './paymentAuth';
 // import Signup from './Signup';
 // import Otp from './Otp';
 
@@ -42,6 +43,7 @@ export default class Routes extends Component {
                 <Scene key="showCart" component={ShowCart} title="Cart"/>
                 <Scene key="searchCustomers" component={SearchCustomers} title="Search Customers"/>
                 <Scene key="payMerchant" component={PayMerchant} title="Pay Merchant"/>
+                <Scene key="paymentAuth" component={PaymentAuth} title="Payment Authorization"/>
                 </Stack>
             </Router>
         )

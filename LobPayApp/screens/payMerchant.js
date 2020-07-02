@@ -18,7 +18,6 @@ export default class PayMerchant extends Component {
     }
     makePayment() {
       console.log(this.state);
-      console.log('Visa Checkout');
       // Redirect to Visa Checkout
       // fetch(apiHost + '/pay/' + this.state.cid + '/' + this.state.mid, {method: 'POST', body: this.state.bill})
       //   .then((response) => response.json())
@@ -31,7 +30,7 @@ export default class PayMerchant extends Component {
       //   });
       //  
       // Update Invoice for Customers
-      Actions.push('merchantOperations', {mid: this.state.mid});
+      Actions.paymentAuth(this.state);
     }
     render() {
         return(

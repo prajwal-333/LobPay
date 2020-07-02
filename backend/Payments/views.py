@@ -59,3 +59,24 @@ class makePayment(APIView):
         if response.status_code == 200 :
        	    return Response({"payment":"success"})
         return Response({"payment":"failure"})     
+
+class AuthPayment(APIView):
+    @staticmethod
+    def post(request):
+        mobile = request.data["mobile"]
+        password = request.data["password"]
+        try:
+            user = Users.objects.get(mobile_number=mobile)
+            act_pass = getattr(user, "password")
+            verify = getattr(user, "is_verified")
+            # print(act_pass, password)
+            if verify==False:
+                user.delete()
+                return Response({"verified":"false","issue":"User does not exist"}, status=400)
+            if (act_pass == password) and verify:
+                return Response({"verified":"true", "id":user.id}, status=200)
+            return Response({"verified":"false"}, status=400)
+        except ObjectDoesNotExist:
+            return Response({"verified":"false","issue":"User does not exist"}, status=400)
+        except :
+            return Response({"issue":"Error Occurred"}, status=404)

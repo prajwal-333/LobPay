@@ -73,12 +73,6 @@ export default class Login extends Component{
   choose() {
     Actions.choose();
 }
-  searchCustomers() {
-    Actions.searchCustomers();
-  }
-  payMerchant() {
-    Actions.payMerchant();
-  }
   render(){
     return(
       <View style={styles.container}>
