@@ -103,9 +103,10 @@ export default class ManageInventory extends Component {
           <View style={styles.buttonsContainer}>
             <View style={{flex: 0.5, padding: 5}}>
             </View>
-            <View style={{flex: 0.5, padding: 5}}>
-              <Button
+            <View style={{flex: 0.5, padding: 5 }}>
+              <Button 
                 title={'Add Product'}
+                color='#fbc41b'
                 onPress={() => this.addProduct()}
               />
             </View>

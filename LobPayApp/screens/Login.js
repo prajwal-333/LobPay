@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { StyleSheet, Text, View,TextInput,Button ,TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Signup from './Signup';
+// import { ThemeProvider } from 'react-native-elements';
 // export default function login() {
 //     return (
 //       <View style={styles.container}>
@@ -81,43 +82,53 @@ export default class Login extends Component{
   render(){
     return(
       <View style={styles.container}>
+        <View style={styles.inputView} >
         <TextInput
           value={this.state.phone}
           onChangeText={(username) => this.setState({ username })}
           placeholder={'username'}
-          style={styles.input}
+          style={styles.inputText}
           // keyboardType='number-pad'
         />
+        </View>
+        <View style={styles.inputView} >
         <TextInput
           value={this.state.password}
           onChangeText={(password) => this.setState({ password })}
           placeholder={'Password'}
           secureTextEntry={true}
-          style={styles.input}
+          style={styles.inputText}
         />
-         <Button
+        </View >
+        <TouchableOpacity onPress={this.onLogin.bind(this)} style={styles.loginBtn}>
+          <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+         {/* <Button
           title={'Login'}
-          style={styles.input}
+          style={styles.loginBtn}
           onPress={this.onLogin.bind(this)}
-        />
+        /> */}
         <View style={styles.signupTextCont}> 
                     <Text >Already have an account? </Text>
                     <TouchableOpacity onPress={this.choose}><Text style={styles.signupButton}>Sign up</Text></TouchableOpacity>
-                   {/*Added for Testing components */}
-                    {/* <TouchableOpacity onPress={this.searchCustomers}><Text style={styles.signupButton}> SearchCustomer</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={this.payMerchant}><Text style={styles.signupButton}> PayMerch</Text></TouchableOpacity> */}
         </View>
       </View>
-
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+   logo:{
+    fontWeight:"bold",
+    fontSize:50,
+    color:"#fb5b5a",
+    marginBottom:40
   },
   input: {
     width: 350,
@@ -142,6 +153,36 @@ const styles = StyleSheet.create({
       color: '#12799f',
       fontSize:16,
       fontWeight: '500'
+  },
+  inputView:{
+    width:"80%",
+    backgroundColor:"#002299",
+    borderRadius:25,
+    height:50,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20
+  },
+  inputText:{
+    height:50,
+    color:"white"
+  },
+  forgot:{
+    color:"white",
+    fontSize:11
+  },
+  loginBtn:{
+    width:"80%",
+    backgroundColor:"#fbc41b",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
+  },
+  loginText:{
+    color:"white"
   }
 });
 module.exports = Login;

@@ -24,7 +24,7 @@ export default class Routes extends Component {
         return (
             <Router barButtonIconStyle ={styles.barButtonIconStyle}
                 hideNavBar={false} 
-                navigationBarStyle={{backgroundColor: '#1565c0',}} 
+                navigationBarStyle={{backgroundColor: '#002299',}} 
                 titleStyle={{color: 'white',}}
             >
                 <Stack key="root">
@@ -35,7 +35,7 @@ export default class Routes extends Component {
                 <Scene key="signupMerchant" component={SignupMerchant} title="Signup"/>
                 <Scene key="otp" component={Otp} title="Otp"/>
                 <Scene key="customer" component={Customer} title="Customer"/>
-                <Scene key="merchantOperations" component={MerchantOperations} title="Merchant Operations"/>
+                <Scene key="merchantOperations" component={MerchantOperations} title="Merchant Operations" renderBackButton={()=><View/>}/>
                 <Scene key="manageInventory" component={ManageInventory} title="Manage Inventory"/>
                 <Scene key="addProduct" component={AddProduct} title="Add Product"/>
                 <Scene key="makeBill" component={MakeBill} title="Make Bill"/>

@@ -67,7 +67,7 @@ export default class MakeBill extends Component {
     }
     showCart() {
       console.log(this.state.cart);
-      Actions.showCart({mid: this.state.mid, products: this.state.products});
+      Actions.showCart({mid: this.state.mid, products: this.state.data});
     }
     viewProducts(){
         var view = [];
@@ -90,7 +90,6 @@ export default class MakeBill extends Component {
                 <View key={product.name} style={styles.itemContainer}>
                   <View style={styles.item} onPress={() => this.select(product)}>
                     <Text style={styles.itemText}>{product.name}</Text>
-                    <Text style={styles.itemText}>{product.weight < 1 ? `${Number(product.weight)*1000}g` : `${Number(product.weight)}Kg`}</Text>
                     <Text style={styles.itemText}>Rs. {product.price}</Text>
                     <View style={{flexDirection: 'row'}}>
                       <View style={{flex: 0.5}}>
@@ -99,12 +98,12 @@ export default class MakeBill extends Component {
                       <View style={{flex: 0.5}}>
                         {
                           (product.cart == 0)
-                           ? <View style={{paddingHorizontal: 5}}><Button title={'Add To Cart'} onPress={() => {this.addToCart(index)}}/></View>
+                           ? <View style={{paddingHorizontal: 5}}><Button color='#fbc41b' title={'Add To Cart'} onPress={() => {this.addToCart(index)}}/></View>
                            : <View style={{flexDirection: 'row-reverse'}}>
-                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
+                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
                                 <View style={{flex: 0.4,paddingHorizontal: 5,alignItems: 'center'}}><Text style={styles.itemText}>{product.cart}</Text></View>
-                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
-                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'x'} onPress={() => this.removeFromCart(index)}/></View>
+                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
+                                <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'x'} onPress={() => this.removeFromCart(index)}/></View>
                              </View>
                         }
                       </View>
@@ -143,6 +142,7 @@ export default class MakeBill extends Component {
             <View style={{flex: 0.5, padding: 5}}>
               <Button
                 title={'Show Cart'}
+                color='#fbc41b'
                 onPress={() => this.showCart()}
               />
             </View>

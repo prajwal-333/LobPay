@@ -12,10 +12,45 @@ export default class Choose extends Component{
     }
     render(){
     return(
-        <View style={{alignItems:'center',}}>
-            <Button title='Customer' onPress={this.customer}/>
+            <View style={styles.container}>
+              {/* <View style={styles.buttonContainer}> */}
+            {/* <Button title='Customer' onPress={this.customer}/> */}
+            
+            <TouchableOpacity onPress={this.customer} style={styles.loginBtn}>
+          <Text style={styles.loginText}>Customer</Text>
+        </TouchableOpacity>
+{/* 
+             <View style={styles.buttonContainer}>
             <Button title='Merchant' onPress={this.merchant}/>
+            </View> */}
+            <TouchableOpacity onPress={this.merchant} style={styles.loginBtn}>
+          <Text style={styles.loginText}>Merchant</Text>
+        </TouchableOpacity>
         </View>
     );
 }
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+    },
+    buttonContainer: {
+        margin:5
+    },
+    loginBtn:{
+    width:"80%",
+    backgroundColor:"#fbc41b",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
+  },
+  loginText:{
+    color:"white"
+  }
+});

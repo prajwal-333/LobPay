@@ -29,8 +29,15 @@ export default class AddProduct extends Component {
         price : Number(this.state.price),
         quantity : Number(this.state.quantity),
       }
-      var array = [product];
-      fetch(apiHost + '/inv/merchantInventory/' + this.state.mid, {method: 'POST', body: array})
+      
+      fetch(apiHost + '/inv/merchantInventory/' + this.state.mid, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([product])
+      })
         .then((response) => response.json())
         .then((responseJson) => {
           if(responseJson.Success === "true") {
@@ -80,12 +87,14 @@ export default class AddProduct extends Component {
             <View style={{flex: 0.5, padding: 5}}>
               <Button
                 title={'Cancel'}
+                color='#fbc41b'
                 onPress={() => this.onCancel()}
               />
             </View>
             <View style={{flex: 0.5, padding: 5}}>
               <Button
                 title={'Confirm'}
+                color='#fbc41b'
                 onPress={() => this.onConfirm()}
               />
             </View>

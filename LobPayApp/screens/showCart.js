@@ -11,7 +11,7 @@ export default class ShowCart extends Component {
             mid: props.mid,
             search: '',
             products: props.products ? props.products : [],
-            data: [],
+            data: props.products ? props.products : [],
             disc: '',
             bAmount: 0,
             discount: 0,
@@ -44,7 +44,7 @@ export default class ShowCart extends Component {
     }
     updateCart(index, offset) {
       var products = this.state.products;
-      if (products[index].cart + offset < 1 || products[index].cart + offset > products[index].units)  return ;
+      if (products[index].cart + offset < 1 || products[index].cart + offset > products[index].quantity)  return ;
       products[index].cart += offset;
       this.setState({products});
     }
@@ -73,14 +73,14 @@ export default class ShowCart extends Component {
                     <Text style={styles.itemText}>Rs. {product.price}</Text>
                     <View style={{flexDirection: 'row'}}>
                       <View style={{flex: 0.5}}>
-                      <Text style={styles.itemText}>{product.units} N</Text>
+                      <Text style={styles.itemText}>{product.quantity} N</Text>
                       </View>
                       <View style={{flex: 0.5}}>
                         <View style={{flexDirection: 'row-reverse'}}>
-                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
+                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'+'} onPress={() => this.updateCart(index, +1)} /></View>
                             <View style={{flex: 0.4,paddingHorizontal: 5,alignItems: 'center'}}><Text style={styles.itemText}>{product.cart}</Text></View>
-                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
-                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button title={'x'} onPress={() => this.removeFromCart(index)}/></View>
+                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'-'} onPress={() => this.updateCart(index, -1)} /></View>
+                            <View style={{flex: 0.2,paddingHorizontal: 5}}><Button color='#fbc41b' title={'x'} onPress={() => this.removeFromCart(index)}/></View>
                         </View>
                       </View>
                     </View>
@@ -174,12 +174,14 @@ export default class ShowCart extends Component {
           <View style={styles.buttonsContainer}>
             <View style={{flex: 0.5, padding: 5}}>
               <Button
+                color='#fbc41b'
                 title={'Add More Products'}
                 onPress={() => this.goBack()}
               />
             </View>
             <View style={{flex: 0.5, padding: 5}}>
               <Button
+                color='#fbc41b'
                 title={'Make Payment'}
                 onPress={() => this.makePayment()}
               />
