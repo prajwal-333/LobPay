@@ -19,16 +19,19 @@ export default class PayMerchant extends Component {
     makePayment() {
       console.log(this.state);
       console.log('Visa Checkout');
-
-      fetch(apiHost + '/pay/' + this.state.cid + '/' + this.state.mid, {method: 'POST', body: this.state.bill})
-        .then((response) => response.json())
-        .then((responseJson) => {
-          console.log(responseJson);
-        })
-        .catch((e) => {
-          console.log(e.message);
-          Alert.alert(e.message);
-        });
+      // Redirect to Visa Checkout
+      // fetch(apiHost + '/pay/' + this.state.cid + '/' + this.state.mid, {method: 'POST', body: this.state.bill})
+      //   .then((response) => response.json())
+      //   .then((responseJson) => {
+      //     console.log(responseJson);
+      //   })
+      //   .catch((e) => {
+      //     console.log(e.message);
+      //     Alert.alert(e.message);
+      //   });
+      //  
+      // Update Invoice for Customers
+      Actions.push('merchantOperations');
     }
     render() {
         return(

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { StyleSheet, View,TextInput,Text,Button,ScrollView,TouchableOpacity,Image,Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-const apiHost ='http://192.168.18.4:8000';// Update with ip of host in the network
+const apiHost ='http://192.168.43.122:8000';// Update with ip of host in the network
 
 export default class AddProduct extends Component {
     constructor(props) {
@@ -29,8 +29,15 @@ export default class AddProduct extends Component {
         price : Number(this.state.price),
         quantity : Number(this.state.quantity),
       }
-      var array = [product];
-      fetch(apiHost + '/inv/merchantInventory/' + this.state.mid, {method: 'POST', body: array})
+      
+      fetch(apiHost + '/inv/merchantInventory/' + this.state.mid, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([product])
+      })
         .then((response) => response.json())
         .then((responseJson) => {
           if(responseJson.Success === "true") {

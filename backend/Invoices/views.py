@@ -22,10 +22,18 @@ class fillMerchant(APIView):
         try:
             mer = Merchants.objects.get(id=mid)
             for item in request.data:
-                it = Inventory.objects.get(name=item["name"])
+                if Inventory.objects.filter(name=item["name"]).exists():
+                    it = Inventory.objects.get(name=item["name"])
+                else :
+                    it = Inventory.objects.create(name = item["name"], price=item["price"])
                 quantity = item["quantity"]
-                # print(it, quantity, mer)
-                mer_inv = MerchantsInventory(item_id=it.id, quantity=quantity,mid=mer, price=item["price"])
+                # print(it, quantity, mer) 
+                if MerchantsInventory.objects.filter(item_id=it.id,mid=mer).exists() :
+                    mer_inv = MerchantsInventory.objects.get(item_id=it.id,mid=mer)
+                    mer_inv.quantity=quantity
+                    mer_inv.price=item["price"]
+                else :
+                    mer_inv = MerchantsInventory.objects.create(item_id=it.id,mid=mer, quantity=quantity, price=item["price"])
                 mer_inv.save()
             return Response({"Success":"true"}, status=200)
         except:
@@ -34,11 +42,12 @@ class fillMerchant(APIView):
     @staticmethod
     def get(request, mid):
         send_items = []
-        items = list(MerchantsInventory.objects.all())
+        items = list(MerchantsInventory.objects.filter(mid=mid))
+        print(items)
         for item in items:
-            item_inv = Inventory.objects.get(id=item.id)
+            item_inv = item.item
             item_name = item_inv.name
-            item_price = item_inv.price
+            item_price = item.price
             quantity = item.quantity
             send_item = {"name":item_name, "price":item_price, "quantity":quantity}
             send_items.append(send_item)

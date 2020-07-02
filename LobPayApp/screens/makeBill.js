@@ -67,7 +67,7 @@ export default class MakeBill extends Component {
     }
     showCart() {
       console.log(this.state.cart);
-      Actions.showCart({mid: this.state.mid, products: this.state.products});
+      Actions.showCart({mid: this.state.mid, products: this.state.data});
     }
     viewProducts(){
         var view = [];
@@ -90,7 +90,6 @@ export default class MakeBill extends Component {
                 <View key={product.name} style={styles.itemContainer}>
                   <View style={styles.item} onPress={() => this.select(product)}>
                     <Text style={styles.itemText}>{product.name}</Text>
-                    <Text style={styles.itemText}>{product.weight < 1 ? `${Number(product.weight)*1000}g` : `${Number(product.weight)}Kg`}</Text>
                     <Text style={styles.itemText}>Rs. {product.price}</Text>
                     <View style={{flexDirection: 'row'}}>
                       <View style={{flex: 0.5}}>
